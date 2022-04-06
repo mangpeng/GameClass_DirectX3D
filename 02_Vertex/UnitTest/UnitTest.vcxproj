@@ -149,6 +149,7 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Vertex_Line.h" />
+    <ClInclude Include="Vertex_Line2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -156,6 +157,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Vertex_Line.cpp" />
+    <ClCompile Include="Vertex_Line2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

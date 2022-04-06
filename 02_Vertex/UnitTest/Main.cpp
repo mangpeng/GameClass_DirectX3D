@@ -3,10 +3,12 @@
 #include "Systems/Window.h"
 
 #include "Vertex_Line.h"
+#include "Vertex_Line2.h"
 
 void Main::Initialize()
 {
-	Push(new Vertex_Line());
+	//Push(new Vertex_Line());
+	Push(new Vertex_Line2());
 }
 
 void Main::Ready()

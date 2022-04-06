@@ -6,11 +6,17 @@
     <ClInclude Include="Vertex_Line.h">
       <Filter>Vertex</Filter>
     </ClInclude>
+    <ClInclude Include="Vertex_Line2.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Vertex_Line.cpp">
+      <Filter>Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex_Line2.cpp">
       <Filter>Vertex</Filter>
     </ClCompile>
   </ItemGroup>
