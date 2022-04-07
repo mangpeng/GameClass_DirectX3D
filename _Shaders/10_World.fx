@@ -49,5 +49,13 @@ technique11 T0
         SetVertexShader(CompileShader(vs_5_0, VS()));
         SetPixelShader(CompileShader(ps_5_0, PS_R()));
     }
+
+    pass P1
+    {
+        SetRasterizerState(FillMode_WireFrame);
+
+        SetVertexShader(CompileShader(vs_5_0, VS()));
+        SetPixelShader(CompileShader(ps_5_0, PS_R()));
+    }
 }
 
