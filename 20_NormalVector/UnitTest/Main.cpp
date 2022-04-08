@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "HeightMapDemo.h"
+#include "NormalVectorDemo.h"
 
 void Main::Initialize()
 {
-	Push(new HeightMapDemo());
+	Push(new NormalVectorDemo());
 }
 
 void Main::Ready()

@@ -34,6 +34,14 @@ void Terrain::Update()
 
 void Terrain::Render()
 {
+	for (int i = 0; i < vertexCount; i++)
+	{
+		Vector3 start = vertices[i].Position;
+		Vector3 end = vertices[i].Position + vertices[i].Normal * 2;
+		
+		DebugLine::Get()->RenderLine(start, end, Color(0, 1, 0, 1));
+	}
+
 	UINT stride = sizeof(TerrainVertex);
 	UINT offset = 0;
 
@@ -66,8 +74,6 @@ void Terrain::CreateVertexData()
 			vertices[index].Position.z = (float)z;
 		}
 	}
-
-	int a;
 }
 
 
