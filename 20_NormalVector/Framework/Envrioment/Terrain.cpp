@@ -24,6 +24,10 @@ Terrain::~Terrain()
 
 void Terrain::Update()
 {
+	static Vector3 direction = Vector3(-1, -1, 1);
+	ImGui::SliderFloat3("Direction", direction, -1, 1);
+	shader->AsVector("Direction")->SetFloatVector(direction);
+
 	Matrix world;
 	D3DXMatrixIdentity(&world);
 
