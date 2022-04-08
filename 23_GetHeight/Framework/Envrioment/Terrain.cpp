@@ -80,7 +80,7 @@ float Terrain::GetHeight(Vector3& position)
 
 	Vector3 result;
 
-	if(ddx + ddx <= 1.4f)
+	if(ddx + ddx <= 1.0f)
 		result = v[0] + ((v[2] - v[0]) * ddx) + ((v[1] - v[0]) * ddz);
 	else
 	{
