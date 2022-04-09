@@ -22,6 +22,8 @@ private:
 	ID3DX11EffectVectorVariable* sDirection;
 
 	MeshQuad* quad;
+	MeshCube* cube;
+	MeshGrid* grid;
 };
 
 
