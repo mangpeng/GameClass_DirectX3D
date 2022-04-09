@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 class MeshGrid final : public Mesh
 {
 public:

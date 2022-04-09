@@ -43,7 +43,7 @@ float4 PS(VertexOutput input) : SV_Target
     float3 normal = normalize(input.Normal);
     float3 light = -Direction;
     
-    return DiffuseMap.Sample(LinearSampler, input.Uv) + dot(light, normal);
+    return DiffuseMap.Sample(LinearSampler, input.Uv) * dot(light, normal);
 }
 
 RasterizerState FillMode_WireFrame
