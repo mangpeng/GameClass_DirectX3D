@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "CubeMapDemo.h"
+#include "CubeSkyDemo.h"
 
 void Main::Initialize()
 {
-	Push(new CubeMapDemo());
+	Push(new CubeSkyDemo());
 }
 
 void Main::Ready()

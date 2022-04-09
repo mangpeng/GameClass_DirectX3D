@@ -112,6 +112,9 @@
     <ClCompile Include="CubeMap.cpp">
       <Filter>Objedts</Filter>
     </ClCompile>
+    <ClCompile Include="Envrioment\CubeSky.cpp">
+      <Filter>Enviroment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -207,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="CubeMap.h">
       <Filter>Objedts</Filter>
+    </ClInclude>
+    <ClInclude Include="Envrioment\CubeSky.h">
+      <Filter>Enviroment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
