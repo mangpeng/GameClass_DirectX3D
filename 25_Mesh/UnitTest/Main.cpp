@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "GetVerticalRaycast.h"
+#include "MeshDemo.h"
 
 void Main::Initialize()
 {
-	Push(new GetVerticalRaycast());
+	Push(new MeshDemo());
 }
 
 void Main::Ready()
