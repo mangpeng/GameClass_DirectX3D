@@ -115,6 +115,7 @@
     <ClCompile Include="Envrioment\CubeSky.cpp">
       <Filter>Enviroment</Filter>
     </ClCompile>
+    <ClCompile Include="Buffers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -214,5 +215,6 @@
     <ClInclude Include="Envrioment\CubeSky.h">
       <Filter>Enviroment</Filter>
     </ClInclude>
+    <ClInclude Include="Buffers.h" />
   </ItemGroup>
 </Project>
