@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\GitReposit\GameClass\DirectX11\GameClass_DirectX3D\29_CubeMap\Debug\UnitTest.exe</FullPath>
+      <FullPath>D:\GitReposit\GameClass\DirectX11\GameClass_DirectX3D\32_Renderer\Debug\UnitTest.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

@@ -42,7 +42,7 @@ float4 ViewProjection(float4 position)
     return mul(position, Projection);
 }
 
-float4 WorldNormal(float3 normal)
+float3 WorldNormal(float3 normal)
 {
     return mul(normal, (float3x3)World);
 }

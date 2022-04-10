@@ -116,6 +116,13 @@
       <Filter>Enviroment</Filter>
     </ClCompile>
     <ClCompile Include="Buffers.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="PerFrame.cpp">
+      <Filter>Renders</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Renders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -216,5 +223,12 @@
       <Filter>Enviroment</Filter>
     </ClInclude>
     <ClInclude Include="Buffers.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="PerFrame.h">
+      <Filter>Renders</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Renders</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
