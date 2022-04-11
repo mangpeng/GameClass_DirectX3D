@@ -14,7 +14,7 @@ PerFrame::~PerFrame()
 }
 
 void PerFrame::Update()
-{ 
+{
 	desc.Time = Time::Get()->Running();
 }
 

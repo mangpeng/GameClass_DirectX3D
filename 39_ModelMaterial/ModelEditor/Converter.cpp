@@ -150,7 +150,7 @@ void Converter::WriteMeshData(wstring savePath)
 
 void Converter::ExportMaterial(wstring savePath, bool bOverwrite)
 {
-	savePath = L"../../_Textures/" + savePath + L".material";
+	savePath = L"../../_Texture/" + savePath + L".material";
 
 	if (bOverwrite == false)
 	{
@@ -341,7 +341,7 @@ string Converter::WriteTexture(string saveFolder, string file)
 		path = saveFolder + fileName;
 		CopyFileA(origin.c_str(), path.c_str(), FALSE);
 
-		String::Replace(&path, "../../_Textures/", "");
+		String::Replace(&path, "../../_Texture/", "");
 	}
 
 	return Path::GetFileName(path);

@@ -11,10 +11,13 @@ public:
 
 public:
 	void ReadMesh(wstring file);
+	void ReadMaterial(wstring file);
+
 	Transform* GetTransform() { return transform; }
 	Model* GetModel() { return model; }
 
 	void Pass(UINT pass);
+
 	void UpdateTransform(ModelBone* bone = NULL, Matrix& matrix = Matrix());
 
 private:
@@ -29,4 +32,3 @@ private:
 
 	Matrix transforms[MAX_MODEL_TRANSFORMS];
 };
-

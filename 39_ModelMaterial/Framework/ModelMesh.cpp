@@ -23,7 +23,7 @@ ModelMesh::~ModelMesh()
 	SafeDelete(transform);
 	SafeDelete(perFrame);
 
-	//SafeDelete(material);
+	SafeDelete(material);
 
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
@@ -38,6 +38,12 @@ void ModelMesh::Binding(Model* model)
 {
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(Model::ModelVertex));
 	indexBuffer = new IndexBuffer(indices, indexCount);
+
+
+	Material* srcMaterial = model->MaterialByName(materialName);
+
+	material = new Material();
+	material->CopyFrom(srcMaterial);
 }
 
 void ModelMesh::SetShader(Shader* shader)
@@ -51,6 +57,8 @@ void ModelMesh::SetShader(Shader* shader)
 	perFrame = new PerFrame(shader);
 
 	sBoneBuffer = shader->AsConstantBuffer("CB_Bone");
+
+	material->SetShader(shader);
 }
 
 void ModelMesh::Update()
@@ -68,7 +76,7 @@ void ModelMesh::Render()
 
 	perFrame->Render();
 	transform->Render();
-	//material->Render();
+	material->Render();
 
 	vertexBuffer->Render();
 	indexBuffer->Render();
