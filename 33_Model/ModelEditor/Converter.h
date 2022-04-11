@@ -5,7 +5,7 @@ public:
 	Converter();
 	~Converter();
 
-	void ReadFile();
+	void ReadFile(wstring file);
 
 public:
 	void ExportMesh(wstring savePath);
@@ -23,6 +23,6 @@ private:
 	const aiScene* scene;
 
 	vector<struct asBone*> bones;
-	vector<struct asMesh*> mesh;
+	vector<struct asMesh*> meshes;
 };
 

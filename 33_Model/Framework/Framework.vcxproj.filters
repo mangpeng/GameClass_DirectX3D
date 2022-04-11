@@ -22,6 +22,9 @@
     <Filter Include="Objedts">
       <UniqueIdentifier>{7820785e-d770-4527-9afb-012d29c0a526}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{da8a287b-b67d-4f52-91f5-557105f526d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp" />
@@ -123,7 +126,9 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Renders</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -231,6 +236,8 @@
     <ClInclude Include="Renderer.h">
       <Filter>Renders</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
