@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9ebb263e-0d67-4cca-a032-38836ace4065}</ProjectGuid>
+    <ProjectGuid>{0DC5F526-FF6E-4A8A-8FEC-B6D4F701B161}</ProjectGuid>
     <RootNamespace>UnitTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -146,58 +146,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CubeDemo.h" />
-    <ClInclude Include="CubeMapDemo.h" />
-    <ClInclude Include="CubeSkyDemo.h" />
-    <ClInclude Include="GetHeightDemo.h" />
-    <ClInclude Include="GetVerticalRaycast.h" />
-    <ClInclude Include="GridDemo.h" />
-    <ClInclude Include="HeightMapDemo.h" />
-    <ClInclude Include="IndexDemo.h" />
+    <ClInclude Include="Converter.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="MeshDemo.h" />
-    <ClInclude Include="NormalVectorDemo.h" />
-    <ClInclude Include="RectDemo.h" />
-    <ClInclude Include="RotationDemo.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TextureDemo.h" />
-    <ClInclude Include="TextureLoadDemo.h" />
-    <ClInclude Include="TextureSamplerDemo.h" />
-    <ClInclude Include="TriangleList.h" />
-    <ClInclude Include="UserInterfaceDemo.h" />
-    <ClInclude Include="Vertex_Line.h" />
-    <ClInclude Include="Vertex_Line2.h" />
-    <ClInclude Include="WorldDemo.h" />
-    <ClInclude Include="WorldDemo2.h" />
-    <ClInclude Include="WorldDemo3.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CubeDemo.cpp" />
-    <ClCompile Include="CubeMapDemo.cpp" />
-    <ClCompile Include="CubeSkyDemo.cpp" />
-    <ClCompile Include="GetHeightDemo.cpp" />
-    <ClCompile Include="GetVerticalRaycast.cpp" />
-    <ClCompile Include="GridDemo.cpp" />
-    <ClCompile Include="HeightMapDemo.cpp" />
-    <ClCompile Include="IndexDemo.cpp" />
+    <ClCompile Include="Converter.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MeshDemo.cpp" />
-    <ClCompile Include="NormalVectorDemo.cpp" />
-    <ClCompile Include="RectDemo.cpp" />
-    <ClCompile Include="RotationDemo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TextureDemo.cpp" />
-    <ClCompile Include="TextureLoadDemo.cpp" />
-    <ClCompile Include="TextureSamplerDemo.cpp" />
-    <ClCompile Include="TriangleList.cpp" />
-    <ClCompile Include="UserInterfaceDemo.cpp" />
-    <ClCompile Include="Vertex_Line.cpp" />
-    <ClCompile Include="Vertex_Line2.cpp" />
-    <ClCompile Include="WorldDemo.cpp" />
-    <ClCompile Include="WorldDemo2.cpp" />
-    <ClCompile Include="WorldDemo3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

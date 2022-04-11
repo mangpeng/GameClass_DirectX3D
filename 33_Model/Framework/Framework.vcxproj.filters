@@ -123,6 +123,7 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Renders</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -230,5 +231,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Renders</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h" />
   </ItemGroup>
 </Project>

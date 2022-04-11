@@ -32,6 +32,7 @@
     <ClCompile Include="Meshes\MeshGrid.cpp" />
     <ClCompile Include="Meshes\MeshQuad.cpp" />
     <ClCompile Include="Meshes\MeshSphere.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="PerFrame.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="Meshes\MeshGrid.h" />
     <ClInclude Include="Meshes\MeshQuad.h" />
     <ClInclude Include="Meshes\MeshSphere.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="PerFrame.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renders\Context.h" />
@@ -185,7 +187,9 @@
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Debug\$(ProjectName).lib" "$(SolutionDir)UnitTest"
 copy /Y "$(SolutionDir)Debug\$(ProjectName).pdb" "$(SolutionDir)UnitTest"
-</Command>
+
+copy /Y "$(SolutionDir)Debug\$(ProjectName).lib" "$(SolutionDir)ModelEditor"
+copy /Y "$(SolutionDir)Debug\$(ProjectName).pdb" "$(SolutionDir)ModelEditor"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
