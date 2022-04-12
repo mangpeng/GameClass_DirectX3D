@@ -37,6 +37,7 @@ void Converter::ExportMesh(wstring savePath)
 	ReadBoneData(scene->mRootNode, -1, -1);
 	ReadSkinData();
 
+
 	//Write CSV File
 	{
 		FILE* file;
@@ -67,7 +68,7 @@ void Converter::ExportMesh(wstring savePath)
 			}
 		}
 
-		fclose(file); 
+		fclose(file);
 	}
 
 	WriteMeshData(savePath);
@@ -149,9 +150,8 @@ void Converter::ReadSkinData()
 	for (UINT i = 0; i < scene->mNumMeshes; i++)
 	{
 		aiMesh* aiMesh = scene->mMeshes[i];
+		if (aiMesh->HasBones() == false) continue;
 
-		if (aiMesh->HasBones() == false) 
-			continue;
 
 		asMesh* mesh = meshes[i];
 
@@ -160,7 +160,7 @@ void Converter::ReadSkinData()
 
 		for (UINT b = 0; b < aiMesh->mNumBones; b++)
 		{
-			aiBone* aiMeshBone = aiMesh->mBones[b]; 
+			aiBone* aiMeshBone = aiMesh->mBones[b];
 
 			UINT boneIndex = 0;
 			for (asBone* bone : bones)
@@ -168,6 +168,7 @@ void Converter::ReadSkinData()
 				if (bone->Name == (string)aiMeshBone->mName.C_Str())
 				{
 					boneIndex = bone->Index;
+
 					break;
 				}
 			}//for(bone)
@@ -180,6 +181,7 @@ void Converter::ReadSkinData()
 				boneWeights[index].AddWeights(boneIndex, weight);
 			}
 		}//for(b)
+
 
 		for (UINT w = 0; w < boneWeights.size(); w++)
 		{
@@ -235,7 +237,7 @@ void Converter::WriteMeshData(wstring savePath)
 
 void Converter::ExportMaterial(wstring savePath, bool bOverwrite)
 {
-	savePath = L"../../_Texture/" + savePath + L".material";
+	savePath = L"../../_Textures/" + savePath + L".material";
 
 	if (bOverwrite == false)
 	{
@@ -426,7 +428,7 @@ string Converter::WriteTexture(string saveFolder, string file)
 		path = saveFolder + fileName;
 		CopyFileA(origin.c_str(), path.c_str(), FALSE);
 
-		String::Replace(&path, "../../_Texture/", "");
+		String::Replace(&path, "../../_Textures/", "");
 	}
 
 	return Path::GetFileName(path);
@@ -437,15 +439,16 @@ void Converter::ClipList(vector<wstring>* list)
 	for (UINT i = 0; i < scene->mNumAnimations; i++)
 	{
 		aiAnimation* anim = scene->mAnimations[i];
+
 		list->push_back(String::ToWString(anim->mName.C_Str()));
 	}
 }
 
 void Converter::ExportAnimClip(UINT index, wstring savePath)
 {
-	savePath = L"../../_models/" + savePath + L".clip";
-	asClip* clip = ReadClipData(scene->mAnimations[index]);
+	savePath = L"../../_Models/" + savePath + L".clip";
 
+	asClip* clip = ReadClipData(scene->mAnimations[index]);
 	WriteClipData(clip, savePath);
 }
 
@@ -457,10 +460,9 @@ asClip* Converter::ReadClipData(aiAnimation* animation)
 	clip->FrameCount = (UINT)animation->mDuration + 1;
 
 	vector<asClipNode> aniNodeInfos;
-	 
 	for (UINT i = 0; i < animation->mNumChannels; i++)
 	{
-		aiNodeAnim* aniNode = animation->mChannels[i]; 
+		aiNodeAnim* aniNode = animation->mChannels[i];
 
 		asClipNode aniNodeInfo;
 		aniNodeInfo.Name = aniNode->mNodeName;
@@ -468,10 +470,11 @@ asClip* Converter::ReadClipData(aiAnimation* animation)
 		UINT keyCount = max(aniNode->mNumPositionKeys, aniNode->mNumScalingKeys);
 		keyCount = max(keyCount, aniNode->mNumRotationKeys);
 
+
 		for (UINT k = 0; k < keyCount; k++)
 		{
 			asKeyframeData frameData;
-			
+
 			bool bFound = false;
 			UINT t = aniNodeInfo.Keyframe.size();
 
@@ -508,7 +511,6 @@ asClip* Converter::ReadClipData(aiAnimation* animation)
 
 			if (bFound == true)
 				aniNodeInfo.Keyframe.push_back(frameData);
-
 		}//for(k)
 
 		if (aniNodeInfo.Keyframe.size() < clip->FrameCount)
@@ -517,21 +519,85 @@ asClip* Converter::ReadClipData(aiAnimation* animation)
 			asKeyframeData keyFrame = aniNodeInfo.Keyframe.back();
 
 			for (UINT n = 0; n < count; n++)
-			{
 				aniNodeInfo.Keyframe.push_back(keyFrame);
-			}
 		}
 		clip->Duration = max(clip->Duration, aniNodeInfo.Keyframe.back().Time);
+
 		aniNodeInfos.push_back(aniNodeInfo);
 	}
-	 
-	return nullptr;
+
+	ReadKeyframeData(clip, scene->mRootNode, aniNodeInfos);
+
+
+	return clip;
 }
 
 void Converter::ReadKeyframeData(asClip* clip, aiNode* node, vector<struct asClipNode>& aiNodeInfos)
 {
+	asKeyframe* keyframe = new asKeyframe();
+	keyframe->BoneName = node->mName.C_Str();
+
+	for (UINT i = 0; i < clip->FrameCount; i++)
+	{
+		asClipNode* asClipNode = NULL;
+
+		for (UINT n = 0; n < aiNodeInfos.size(); n++)
+		{
+			if (aiNodeInfos[n].Name == node->mName)
+			{
+				asClipNode = &aiNodeInfos[n];
+
+				break;
+			}
+		}//for(n)
+
+
+		asKeyframeData frameData;
+		if (asClipNode == NULL)
+		{
+			Matrix transform(node->mTransformation[0]);
+			D3DXMatrixTranspose(&transform, &transform);
+
+			frameData.Time = (float)i;
+			D3DXMatrixDecompose(&frameData.Scale, &frameData.Rotation, &frameData.Translation, &transform);
+		}
+		else
+		{
+			frameData = asClipNode->Keyframe[i];
+		}
+
+		keyframe->Transforms.push_back(frameData);
+	}
+
+	clip->Keyframes.push_back(keyframe);
+
+	for (UINT i = 0; i < node->mNumChildren; i++)
+		ReadKeyframeData(clip, node->mChildren[i], aiNodeInfos);
 }
 
 void Converter::WriteClipData(asClip* clip, wstring savePath)
 {
+	Path::CreateFolders(Path::GetDirectoryName(savePath));
+
+	BinaryWriter* w = new BinaryWriter();
+	w->Open(savePath);
+
+	w->String(clip->Name);
+	w->Float(clip->Duration);
+	w->Float(clip->FrameRate);
+	w->UInt(clip->FrameCount);
+
+	w->UInt(clip->Keyframes.size());
+	for (asKeyframe* keyframe : clip->Keyframes)
+	{
+		w->String(keyframe->BoneName);
+
+		w->UInt(keyframe->Transforms.size());
+		w->Byte(&keyframe->Transforms[0], sizeof(asKeyframeData) * keyframe->Transforms.size());
+
+		SafeDelete(keyframe);
+	}
+
+	w->Close();
+	SafeDelete(w);
 }

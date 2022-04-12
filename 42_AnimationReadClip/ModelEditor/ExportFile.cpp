@@ -49,17 +49,21 @@ void ExportFile::Kachujin()
 
 	conv = new Converter();
 	conv->ReadFile(L"Kachujin/Sword And Shield Idle.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Sword And Shield Idle");
 	SafeDelete(conv);
 
-	//conv = new Converter();
-	//conv->ReadFile(L"Kachujin/Sword And Shield Run.fbx");
-	//SafeDelete(conv);
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Sword And Shield Run.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Sword And Shield Run");
+	SafeDelete(conv);
 
-	//conv = new Converter();
-	//conv->ReadFile(L"Kachujin/Sword And Shield Slash.fbx");
-	//SafeDelete(conv);
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Sword And Shield Slash.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Sword And Shield Slash");
+	SafeDelete(conv);
 
-	//conv = new Converter();
-	//conv->ReadFile(L"Kachujin/Salsa Dancing.fbx");
-	//SafeDelete(conv);
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Salsa Dancing.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Salsa Dancing");
+	SafeDelete(conv);
 }
