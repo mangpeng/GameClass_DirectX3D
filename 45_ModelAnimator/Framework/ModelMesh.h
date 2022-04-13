@@ -61,6 +61,8 @@ public:
 	void Transforms(Matrix* transforms);
 	void SetTransform(Transform* transform);
 
+	void TransformsSRV(ID3D11ShaderResourceView* srv) { transformSRV = srv; }
+
 private:
 	struct BoneDesc
 	{
@@ -95,4 +97,9 @@ private:
 
 	ConstantBuffer* boneBuffer;
 	ID3DX11EffectConstantBuffer* sBoneBuffer;
+
+	ID3D11ShaderResourceView* transformSRV = NULL;
+	ID3DX11EffectShaderResourceVariable* sTransformSRV;
+
+
 };

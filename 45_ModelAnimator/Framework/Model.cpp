@@ -176,7 +176,7 @@ void Model::BindMesh()
 
 void Model::ReadMaterial(wstring file)
 {
-	file = L"../../_Textures/" + file + L".material";
+	file = L"../../_Texture/" + file + L".material";
 
 	Xml::XMLDocument* document = new Xml::XMLDocument();
 	Xml::XMLError error = document->LoadFile(String::ToString(file).c_str());
@@ -196,7 +196,7 @@ void Model::ReadMaterial(wstring file)
 		material->Name(String::ToWString(node->GetText()));
 
 		wstring directory = Path::GetDirectoryName(file);
-		String::Replace(&directory, L"../../_Textures", L"");
+		String::Replace(&directory, L"../../_Texture", L"");
 
 
 		wstring texture = L"";

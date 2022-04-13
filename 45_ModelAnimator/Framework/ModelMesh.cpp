@@ -59,6 +59,7 @@ void ModelMesh::SetShader(Shader* shader)
 	sBoneBuffer = shader->AsConstantBuffer("CB_Bone");
 
 	material->SetShader(shader);
+	sTransformSRV = shader->AsSRV("TransformsMap");
 }
 
 void ModelMesh::Update()
@@ -81,6 +82,10 @@ void ModelMesh::Render()
 	vertexBuffer->Render();
 	indexBuffer->Render();
 
+	// null 이면 일반 모델, 아니면 애니메이션 모델
+	if (transformSRV != NULL)
+		sTransformSRV->SetResource(transformSRV);
+
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	shader->DrawIndexed(0, pass, indexCount);
@@ -95,5 +100,7 @@ void ModelMesh::SetTransform(Transform* transform)
 {
 	this->transform->Set(transform);
 }
+
+
 
 

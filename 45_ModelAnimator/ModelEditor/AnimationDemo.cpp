@@ -7,8 +7,7 @@ void AnimationDemo::Initialize()
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(1, 36, -85);
 
-
-	shader = new Shader(L"38_Model.fx");
+	shader = new Shader(L"45_Animation.fx");
 
 	Kachujin();
 }

@@ -20,6 +20,7 @@ public:
 	void Pass(UINT pass);
 
 private:
+	
 	void CreateTexture();
 	void CreateClipTransform(UINT index);
 
@@ -50,10 +51,31 @@ private:
 
 	ID3D11Texture2D* texture = NULL;
 	ID3D11ShaderResourceView* srv = NULL;
+
+private:
+	struct KeyframeDesc
+	{
+		int clip = 0;
+
+		UINT CurrFrame = 0;
+		UINT NextFrame = 0;
+
+		float Time = 0.0f;
+		float RunningTime = 0.0f;
+
+		float Speed = 1.0f;
+
+		Vector2 Padding;
+	} keyframeDesc;
+
+	ConstantBuffer* frameBuffer;
+	ID3DX11EffectConstantBuffer* sFrameBuffer;
+
 private:
 	Shader* shader;
 	Model* model;
 	Transform* transform;
 
+	int temp = 0;
 };
 

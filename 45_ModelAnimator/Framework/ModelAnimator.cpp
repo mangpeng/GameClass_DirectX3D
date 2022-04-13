@@ -6,16 +6,32 @@ ModelAnimator::ModelAnimator(Shader* shader)
 {
 	model = new Model();
 	transform = new Transform(shader);
+
+	frameBuffer = new ConstantBuffer(&keyframeDesc, sizeof(KeyframeDesc));
+	sFrameBuffer = shader->AsConstantBuffer("CB_AnimationFrame");
 }
 
 ModelAnimator::~ModelAnimator()
 {
 	SafeDelete(model);
 	SafeDelete(transform);
+
+	SafeDeleteArray(clipTransforms);
+	SafeRelease(texture);
+	SafeRelease(srv);
+
+	SafeDelete(frameBuffer);
 }
 
 void ModelAnimator::Update()
 {
+	ImGui::InputInt("Clip", &keyframeDesc.clip);
+	keyframeDesc.clip %= model->ClipCount();
+
+	ImGui::InputInt("CurrFrame", &temp);
+	keyframeDesc.CurrFrame = temp;
+	keyframeDesc.CurrFrame %= model->ClipByIndex(keyframeDesc.clip)->FrameCount();
+
 	if (texture == NULL)
 	{
 		for (ModelMesh* mesh : model->Meshes())
@@ -24,12 +40,15 @@ void ModelAnimator::Update()
 		CreateTexture();
 	}
 
-	/*for (ModelMesh* mesh : model->Meshes())
-		mesh->Update();*/
+	for (ModelMesh* mesh : model->Meshes())
+		mesh->Update();
 }
 
 void ModelAnimator::Render()
 {
+	frameBuffer->Render();
+	sFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
+
 	for (ModelMesh* mesh : model->Meshes())
 	{
 		mesh->SetTransform(transform);
@@ -93,7 +112,7 @@ void ModelAnimator::CreateTexture()
 				void* temp = (BYTE*)p + start + (MAX_MODEL_TRANSFORMS * k * sizeof(Matrix));
 
 				// 사용선언
-				VirtualAlloc(temp, MAX_MODEL_TRANSFORMS * sizeof(Matrix, MEM_COMMIT, PAGE_READWRITE);
+				VirtualAlloc(temp, MAX_MODEL_TRANSFORMS * sizeof(Matrix), MEM_COMMIT, PAGE_READWRITE);
 				memcpy(temp, clipTransforms[c].Transform[k], MAX_MODEL_TRANSFORMS * sizeof(Matrix));
 			}
 		}//for(c)
@@ -111,6 +130,21 @@ void ModelAnimator::CreateTexture()
 		SafeDeleteArray(subResources);
 		VirtualFree(p, 0, MEM_RELEASE);
 	}
+
+	//Create SRV
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+		desc.Texture2DArray.MipLevels = 1;
+		desc.Texture2DArray.ArraySize = model->ClipCount();
+
+		Check(D3D::GetDevice()->CreateShaderResourceView(texture, &desc, &srv));
+	}
+
+	for (ModelMesh* mesh : model->Meshes())
+		mesh->TransformsSRV(srv);
 }
 
 void ModelAnimator::CreateClipTransform(UINT index)
