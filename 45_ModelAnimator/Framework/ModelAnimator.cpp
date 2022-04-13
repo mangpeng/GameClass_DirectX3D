@@ -24,8 +24,8 @@ void ModelAnimator::Update()
 		CreateTexture();
 	}
 
-	for (ModelMesh* mesh : model->Meshes())
-		mesh->Update();
+	/*for (ModelMesh* mesh : model->Meshes())
+		mesh->Update();*/
 }
 
 void ModelAnimator::Render()
@@ -60,9 +60,57 @@ void ModelAnimator::Pass(UINT pass)
 
 void ModelAnimator::CreateTexture()
 {
+	//Matrix matrix[MAX_MODEL_KEYFRAMES][MAX_MODEL_TRANSFORMS];
 	clipTransforms = new ClipTransform[model->ClipCount()];
 	for (UINT i = 0; i < model->ClipCount(); i++)
 		CreateClipTransform(i);
+
+	//Create Texture
+	{
+		D3D11_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+		desc.Width = MAX_MODEL_TRANSFORMS * 4;
+		desc.Height = MAX_MODEL_KEYFRAMES;
+		desc.ArraySize = model->ClipCount();
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		desc.Usage = D3D11_USAGE_IMMUTABLE;
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		desc.MipLevels = 1;
+		desc.SampleDesc.Count = 1;
+
+		UINT pageSize = MAX_MODEL_TRANSFORMS * 4 * 16 * MAX_MODEL_KEYFRAMES;
+
+		// 예약
+		void* p = VirtualAlloc(NULL, pageSize * model->ClipCount(), MEM_RESERVE, PAGE_READWRITE);
+		//MEMORY_BASIC_INFORMATION, VirtualQuery : 실제로 예약된 사이즈를 알 수 있다.
+
+		for (UINT c = 0; c < model->ClipCount(); c++)
+		{
+			UINT start = c * pageSize;
+
+			for (UINT k = 0; k < MAX_MODEL_KEYFRAMES; k++)
+			{
+				void* temp = (BYTE*)p + start + (MAX_MODEL_TRANSFORMS * k * sizeof(Matrix));
+
+				// 사용선언
+				VirtualAlloc(temp, MAX_MODEL_TRANSFORMS * sizeof(Matrix, MEM_COMMIT, PAGE_READWRITE);
+				memcpy(temp, clipTransforms[c].Transform[k], MAX_MODEL_TRANSFORMS * sizeof(Matrix));
+			}
+		}//for(c)
+
+		D3D11_SUBRESOURCE_DATA* subResources = new D3D11_SUBRESOURCE_DATA[model->ClipCount()];
+		for (UINT c = 0; c < model->ClipCount(); c++)
+		{
+			void* temp = (BYTE*)p + c * pageSize; 
+			subResources[c].pSysMem = temp;
+			subResources[c].SysMemPitch = MAX_MODEL_TRANSFORMS * sizeof(Matrix);
+			subResources[c].SysMemSlicePitch = pageSize;
+		}
+		Check(D3D::GetDevice()->CreateTexture2D(&desc, subResources, &texture));
+
+		SafeDeleteArray(subResources);
+		VirtualFree(p, 0, MEM_RELEASE);
+	}
 }
 
 void ModelAnimator::CreateClipTransform(UINT index)
@@ -109,5 +157,4 @@ void ModelAnimator::CreateClipTransform(UINT index)
 			clipTransforms[index].Transform[f][b] = invGlobal * bones[b];
 		}//for(b)
 	}//for(f)
-
 }

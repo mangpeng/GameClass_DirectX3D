@@ -17,7 +17,7 @@ private:
 	void Airplane();
 	void Tower();
 	void Tank();
-	void Kachujin();
+
 
 private:
 	Shader* shader;
@@ -25,9 +25,8 @@ private:
 	ModelRender* airplane = NULL;
 	ModelRender* tower = NULL;
 	ModelRender* tank = NULL;
-	ModelRender* kachujin = NULL;
 
-
+	 
 	CubeSky* sky;
 
 	Vector3 direction = Vector3(-1, -1, +1);

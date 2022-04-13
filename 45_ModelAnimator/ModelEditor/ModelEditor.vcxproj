@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationDemo.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="ExportFile.h" />
     <ClInclude Include="Main.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationDemo.cpp" />
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="ExportFile.cpp" />
     <ClCompile Include="Main.cpp" />

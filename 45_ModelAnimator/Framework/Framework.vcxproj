@@ -34,6 +34,8 @@
     <ClCompile Include="Meshes\MeshQuad.cpp" />
     <ClCompile Include="Meshes\MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelAnimator.cpp" />
+    <ClCompile Include="ModelClip.cpp" />
     <ClCompile Include="ModelMesh.cpp" />
     <ClCompile Include="ModelRender.cpp" />
     <ClCompile Include="PerFrame.cpp" />
@@ -75,6 +77,8 @@
     <ClInclude Include="Meshes\MeshQuad.h" />
     <ClInclude Include="Meshes\MeshSphere.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelAnimator.h" />
+    <ClInclude Include="ModelClip.h" />
     <ClInclude Include="ModelMesh.h" />
     <ClInclude Include="ModelRender.h" />
     <ClInclude Include="PerFrame.h" />

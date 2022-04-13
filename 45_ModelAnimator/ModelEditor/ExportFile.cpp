@@ -4,10 +4,10 @@
 
 void ExportFile::Initialize()
 {
-	Airplane();
-	Tower();
-	Tank();
-	Kachujin();
+	//Airplane();
+	//Tower();
+	//Tank();
+	//Kachujin();
 }
 
 void ExportFile::Airplane()

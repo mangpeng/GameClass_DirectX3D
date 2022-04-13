@@ -11,6 +11,9 @@
     <ClInclude Include="ModelDemo.h">
       <Filter>Demo</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationDemo.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -20,6 +23,9 @@
       <Filter>Writer</Filter>
     </ClCompile>
     <ClCompile Include="ModelDemo.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationDemo.cpp">
       <Filter>Demo</Filter>
     </ClCompile>
   </ItemGroup>

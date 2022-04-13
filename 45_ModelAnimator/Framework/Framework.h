@@ -102,6 +102,7 @@ typedef D3DXPLANE Plane;
 #include "ModelMesh.h"
 #include "ModelRender.h"
 #include "ModelClip.h"
+#include  "ModelAnimator.h"
 
 #include "Envrioment/Terrain.h"
 #include "Envrioment/CubeSky.h"
