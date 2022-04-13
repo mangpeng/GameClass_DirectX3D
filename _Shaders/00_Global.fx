@@ -81,6 +81,15 @@ struct VertexTextureNormal
 };
 
 /////////////////////////////////////////////////////////////////////////////
+struct MeshOutput
+{
+    float4 Position : SV_Position0; // 래스터라이징이 완료된 포지션
+    float3 oPosition : Position1; // 오리지널 포지션
+    
+    float3 Normal : Normal;
+    float2 Uv : Uv;
+};
+/////////////////////////////////////////////////////////////////////////////
 
 SamplerState LinearSampler
 {
