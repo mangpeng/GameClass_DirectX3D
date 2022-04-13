@@ -122,7 +122,7 @@ void ModelAnimator::ReadClip(wstring file)
 
 void ModelAnimator::Pass(UINT pass)
 {
-	for (ModelMesh* mesh : model->Meshes())
+	for (ModelMesh* mesh : model->Meshes()) 
 		mesh->Pass(pass);
 }
 
