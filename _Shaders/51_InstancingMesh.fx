@@ -13,7 +13,7 @@ float4 PS(MeshOutput input) : SV_Target
 
 technique11 T0
 {
-    P_VP(P0, VS, PS)
+    P_VP(P0, VS_Mesh, PS)
 }
 
 
