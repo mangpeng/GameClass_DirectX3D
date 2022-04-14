@@ -175,7 +175,7 @@ void ThreadDemo::ExecutePerformance()
 	int arr[10000];
 	for (int i = 0; i < 10000; i++)
 		arr[i] = Math::Random(0, 10000);
-
+	1
 	Performance p;
 	p.Start();
 	{
