@@ -17,7 +17,7 @@ struct VertexModel
 
 cbuffer CB_Bone
 {
-    matrix BoneTransforms[MAX_MODEL_TRANSFORMS];
+    matrix BoneTransforms[MAX_MODEL_TRANSFORMS]; 
     uint BoneIndex;
 };
 
