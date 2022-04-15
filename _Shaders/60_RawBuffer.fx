@@ -1,4 +1,4 @@
-//ByteAddressBuffer Input; // srv
+ByteAddressBuffer Input; // srv
 RWByteAddressBuffer Output; // uav
 
 struct Group
@@ -7,6 +7,7 @@ struct Group
     uint3 GroupThreadID;
     uint3 DispatchThreadID;
     uint GroupIndex;
+    float RetValue;
 };
 
 struct ComputeInput
@@ -26,13 +27,17 @@ void CS(ComputeInput input)
     group.DispatchThreadID = asuint(input.DispatchThreadID);
     group.GroupIndex = asuint(input.GroupIndex);
     
-    uint index = input.GroupIndex;
-    uint outAddress = index * 10 * 4;
+    uint index = input.GroupID.x * 10 * 8 * 3 + input.GroupIndex;
+    uint outAddress = index * 11 * 4;
     
-    Output.Store3(outAddress + 0, asuint(group.GroupID));
-    Output.Store3(outAddress + 12, asuint(group.GroupThreadID));
-    Output.Store3(outAddress + 24, asuint(group.DispatchThreadID));
-    Output.Store(outAddress + 36, asuint(group.GroupIndex));
+    uint inAddress = index * 4;
+    group.RetValue = asfloat(Input.Load(inAddress));
+    
+    Output.Store3(outAddress + 0, asuint(group.GroupID)); // 12
+    Output.Store3(outAddress + 12, asuint(group.GroupThreadID)); //24
+    Output.Store3(outAddress + 24, asuint(group.DispatchThreadID)); //36
+    Output.Store(outAddress + 36, asuint(group.GroupIndex)); // 40
+    Output.Store(outAddress + 40, asuint(group.RetValue));
 
 }
 

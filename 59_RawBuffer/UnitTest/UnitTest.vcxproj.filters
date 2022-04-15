@@ -72,6 +72,9 @@
     <ClInclude Include="ThreadDemo.h">
       <Filter>DirectCompute</Filter>
     </ClInclude>
+    <ClInclude Include="RawBufferDemo.h">
+      <Filter>DirectCompute</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -143,6 +146,9 @@
       <Filter>Instancing</Filter>
     </ClCompile>
     <ClCompile Include="ThreadDemo.cpp">
+      <Filter>DirectCompute</Filter>
+    </ClCompile>
+    <ClCompile Include="RawBufferDemo.cpp">
       <Filter>DirectCompute</Filter>
     </ClCompile>
   </ItemGroup>
