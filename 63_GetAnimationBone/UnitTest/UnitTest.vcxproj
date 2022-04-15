@@ -154,6 +154,7 @@
     <ClInclude Include="HeightMapDemo.h" />
     <ClInclude Include="IndexDemo.h" />
     <ClInclude Include="InstancingDemo.h" />
+    <ClInclude Include="InstancingFrameworkDemo.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MeshDemo.h" />
     <ClInclude Include="NormalVectorDemo.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="HeightMapDemo.cpp" />
     <ClCompile Include="IndexDemo.cpp" />
     <ClCompile Include="InstancingDemo.cpp" />
+    <ClCompile Include="InstancingFrameworkDemo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshDemo.cpp" />
     <ClCompile Include="NormalVectorDemo.cpp" />

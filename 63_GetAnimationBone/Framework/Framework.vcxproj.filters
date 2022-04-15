@@ -115,7 +115,6 @@
     <ClCompile Include="Envrioment\CubeSky.cpp">
       <Filter>Enviroment</Filter>
     </ClCompile>
-    <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="PerFrame.cpp">
       <Filter>Renders</Filter>
@@ -145,6 +144,9 @@
       <Filter>Meshes</Filter>
     </ClCompile>
     <ClCompile Include="Render2D.cpp">
+      <Filter>Renders</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers.cpp">
       <Filter>Renders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -243,7 +245,6 @@
     <ClInclude Include="Envrioment\CubeSky.h">
       <Filter>Enviroment</Filter>
     </ClInclude>
-    <ClInclude Include="Buffers.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="PerFrame.h">
       <Filter>Renders</Filter>
@@ -273,6 +274,9 @@
       <Filter>Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Render2D.h">
+      <Filter>Renders</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers.h">
       <Filter>Renders</Filter>
     </ClInclude>
   </ItemGroup>

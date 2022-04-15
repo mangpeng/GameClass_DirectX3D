@@ -7,11 +7,12 @@ public:
 	~ModelAnimator();
 
 	void Update();
-	void Render();
-
 private:
 	void UpdateTweenMode(UINT index);
 	void UpdateBlendMode(UINT index);
+
+public:
+	void Render();
 
 public:
 	void ReadMesh(wstring file);
@@ -20,19 +21,24 @@ public:
 
 	Model* GetModel() { return model; }
 
+	void Pass(UINT pass);
+
 	Transform* AddTransform();
 	Transform* GetTransform(UINT index) { return transforms[index]; }
 	void UpdateTransforms();
+	UINT GetTransformCount() { return transforms.size(); }
 
-	void Pass(UINT pass);
 	void PlayTweenMode(UINT index, UINT clip, float speed = 1.0f, float takeTime = 1.0f);
-	void PlayBlendMode(UINT index, UINT clip1, UINT clip2, UINT clip3);
+	void PlayBlendMode(UINT index, UINT clip, UINT clip1, UINT clip2);
 	void SetBlendAlpha(UINT index, float alpha);
 
+	void SetAttachTransform(UINT boneIndex);
+	void GetAttachTransform(UINT instance, Matrix* outResult);
+
 private:
-	
 	void CreateTexture();
 	void CreateClipTransform(UINT index);
+	void CreateComputeBuffer();
 
 private:
 	struct ClipTransform
@@ -42,7 +48,7 @@ private:
 		ClipTransform()
 		{
 			Transform = new Matrix * [MAX_MODEL_KEYFRAMES];
-			 
+
 			for (UINT i = 0; i < MAX_MODEL_KEYFRAMES; i++)
 				Transform[i] = new Matrix[MAX_MODEL_TRANSFORMS];
 		}
@@ -54,9 +60,7 @@ private:
 
 			SafeDeleteArray(Transform);
 		}
-
 	};
-
 	ClipTransform* clipTransforms = NULL;
 
 	ID3D11Texture2D* texture = NULL;
@@ -65,7 +69,7 @@ private:
 private:
 	struct KeyframeDesc
 	{
-		int clip = 0;
+		int Clip = 0;
 
 		UINT CurrFrame = 0;
 		UINT NextFrame = 0;
@@ -77,9 +81,6 @@ private:
 
 		Vector2 Padding;
 	}; // keyframeDesc;
-
-	ConstantBuffer* frameBuffer;
-	ID3DX11EffectConstantBuffer* sFrameBuffer;
 
 	struct TweenDesc
 	{
@@ -93,10 +94,13 @@ private:
 
 		TweenDesc()
 		{
-			Curr.clip = 0;
-			Next.clip = -1;
+			Curr.Clip = 0;
+			Next.Clip = -1;
 		}
 	} tweenDesc[MAX_MODEL_INSTANCE];
+
+	ConstantBuffer* tweenBuffer;
+	ID3DX11EffectConstantBuffer* sTweenBuffer;
 
 private:
 	struct BlendDesc
@@ -114,11 +118,43 @@ private:
 private:
 	Shader* shader;
 	Model* model;
-	
 
 	vector<Transform*> transforms;
 	Matrix worlds[MAX_MODEL_INSTANCE];
 
 	VertexBuffer* instanceBuffer;
-};
 
+private:
+	struct CS_InputDesc
+	{
+		Matrix Bone;
+	};
+
+	struct CS_OutputDesc
+	{
+		Matrix Result;
+	};
+
+	struct AttachDesc
+	{
+		UINT BoneIndex = 0;
+		float Padding[3];
+	} attachDesc;
+
+private:
+	Shader* computeShader;
+	StructuredBuffer* computeBuffer = NULL;
+
+	CS_InputDesc* csInput = NULL;
+	CS_OutputDesc* csOutput = NULL;
+
+	ID3DX11EffectShaderResourceVariable* sInputSRV;
+	ID3DX11EffectUnorderedAccessViewVariable* sOutputUAV;
+
+
+	ConstantBuffer* computeAttachBuffer;
+
+	ID3DX11EffectConstantBuffer* sComputeAttachBuffer;
+	ID3DX11EffectConstantBuffer* sComputeTweenBuffer;
+	ID3DX11EffectConstantBuffer* sComputeBlendBuffer;
+};

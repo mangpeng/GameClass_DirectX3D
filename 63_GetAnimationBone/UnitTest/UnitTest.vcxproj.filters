@@ -78,6 +78,9 @@
     <ClInclude Include="TextureBufferDemo.h">
       <Filter>DirectCompute</Filter>
     </ClInclude>
+    <ClInclude Include="InstancingFrameworkDemo.h">
+      <Filter>Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -156,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="TextureBufferDemo.cpp">
       <Filter>DirectCompute</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancingFrameworkDemo.cpp">
+      <Filter>Instancing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
