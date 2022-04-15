@@ -6,13 +6,24 @@ ModelAnimator::ModelAnimator(Shader* shader)
 {
 	model = new Model();
 
-	frameBuffer = new ConstantBuffer(&tweenDesc, sizeof(TweenDesc) * MAX_MODEL_INSTANCE);
-	sFrameBuffer = shader->AsConstantBuffer("CB_TweenFrame");
+	tweenBuffer = new ConstantBuffer(&tweenDesc, sizeof(TweenDesc) * MAX_MODEL_INSTANCE);
+	sTweenBuffer = shader->AsConstantBuffer("CB_TweenFrame");
 
 	blendBuffer = new ConstantBuffer(&blendDesc, sizeof(BlendDesc) * MAX_MODEL_INSTANCE);
 	sBlendBuffer = shader->AsConstantBuffer("CB_BlendFrame");
 
 	instanceBuffer = new VertexBuffer(worlds, MAX_MODEL_INSTANCE, sizeof(Matrix), 1, true);
+
+
+	computeShader = new Shader(L"63_GetAnimationBone.fx");
+	computeAttachBuffer = new ConstantBuffer(&attachDesc, sizeof(AttachDesc));
+
+	sInputSRV = computeShader->AsSRV("Input");
+	sOutputUAV = computeShader->AsUAV("Output");
+
+	sComputeAttachBuffer = computeShader->AsConstantBuffer("CB_AttachBone");
+	sComputeTweenBuffer = computeShader->AsConstantBuffer("CB_TweenFrame");
+	sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendFrame");
 }
 
 ModelAnimator::~ModelAnimator()
@@ -23,46 +34,58 @@ ModelAnimator::~ModelAnimator()
 	SafeRelease(texture);
 	SafeRelease(srv);
 
-	SafeDelete(frameBuffer);
+	SafeDelete(tweenBuffer);
 	SafeDelete(blendBuffer);
 
 	SafeDelete(instanceBuffer);
+
+
+	SafeDelete(computeShader);
+	SafeDelete(computeBuffer);
+
+	SafeDeleteArray(csInput);
+	SafeDeleteArray(csOutput);
+
+	SafeDelete(computeAttachBuffer);
 }
 
 void ModelAnimator::Update()
 {
-	for (UINT i = 0; i < transforms.size(); i++)
-	{
-		if (blendDesc[i].Mode == 0)
-			UpdateTweenMode(i);
-		else
-			UpdateBlendMode(i);
-	}
-
 	if (texture == NULL)
 	{
 		for (ModelMesh* mesh : model->Meshes())
 			mesh->SetShader(shader);
 
 		CreateTexture();
+		CreateComputeBuffer();
 	}
+
+	for (UINT i = 0; i < transforms.size(); i++)
+		blendDesc[i].Mode == 0 ? UpdateTweenMode(i) : UpdateBlendMode(i);
+
+
+
+	tweenBuffer->Render();
+	blendBuffer->Render();
+
+	if (computeBuffer != NULL)
+	{
+		computeAttachBuffer->Render();
+		sComputeAttachBuffer->SetConstantBuffer(computeAttachBuffer->Buffer());
+		sComputeTweenBuffer->SetConstantBuffer(tweenBuffer->Buffer());
+		sComputeBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
+
+
+		sInputSRV->SetResource(computeBuffer->SRV());
+		sOutputUAV->SetUnorderedAccessView(computeBuffer->UAV());
+
+		computeShader->Dispatch(0, 0, 1, 1, 1);
+		computeBuffer->CopyFromOutput(csOutput);
+	}
+
 
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Update();
-}
-
-void ModelAnimator::Render()
-{
-	frameBuffer->Render();
-	sFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
-
-	blendBuffer->Render();
-	sBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
-
-	instanceBuffer->Render();
-
-	for (ModelMesh* mesh : model->Meshes())
-		mesh->Render(transforms.size());
 }
 
 void ModelAnimator::UpdateTweenMode(UINT index)
@@ -71,7 +94,7 @@ void ModelAnimator::UpdateTweenMode(UINT index)
 
 	//현재 애니메이션
 	{
-		ModelClip* clip = model->ClipByIndex(desc.Curr.clip);
+		ModelClip* clip = model->ClipByIndex(desc.Curr.Clip);
 
 		desc.Curr.RunningTime += Time::Delta();
 
@@ -86,17 +109,16 @@ void ModelAnimator::UpdateTweenMode(UINT index)
 		desc.Curr.Time = desc.Curr.RunningTime / time;
 	}
 
-	//다음 애니메이션
-	if (desc.Next.clip > -1)
+	if (desc.Next.Clip > -1)
 	{
 		desc.ChangeTime += Time::Delta();
 		desc.TweenTime = desc.ChangeTime / desc.TakeTime;
 
-		if (desc.TweenTime >= 1.0f) // 트윈이 완료된 상황
+		if (desc.TweenTime >= 1.0f)
 		{
 			desc.Curr = desc.Next;
 
-			desc.Next.clip = -1;
+			desc.Next.Clip = -1;
 			desc.Next.CurrFrame = 0;
 			desc.Next.NextFrame = 0;
 			desc.Next.Time = 0;
@@ -107,7 +129,7 @@ void ModelAnimator::UpdateTweenMode(UINT index)
 		}
 		else
 		{
-			ModelClip* clip = model->ClipByIndex(desc.Next.clip);
+			ModelClip* clip = model->ClipByIndex(desc.Next.Clip);
 
 			desc.Next.RunningTime += Time::Delta();
 
@@ -130,7 +152,7 @@ void ModelAnimator::UpdateBlendMode(UINT index)
 
 	for (UINT i = 0; i < 3; i++)
 	{
-		ModelClip* clip = model->ClipByIndex(desc.Clip[i].clip);
+		ModelClip* clip = model->ClipByIndex(desc.Clip[i].Clip);
 
 		desc.Clip[i].RunningTime += Time::Delta();
 
@@ -144,6 +166,18 @@ void ModelAnimator::UpdateBlendMode(UINT index)
 		}
 		desc.Clip[i].Time = desc.Clip[i].RunningTime / time;
 	}
+}
+
+void ModelAnimator::Render()
+{
+	sTweenBuffer->SetConstantBuffer(tweenBuffer->Buffer());
+	sBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
+
+
+	instanceBuffer->Render();
+
+	for (ModelMesh* mesh : model->Meshes())
+		mesh->Render(transforms.size());
 }
 
 void ModelAnimator::ReadMesh(wstring file)
@@ -161,48 +195,28 @@ void ModelAnimator::ReadClip(wstring file)
 	model->ReadClip(file);
 }
 
-Transform* ModelAnimator::AddTransform()
-{
-	Transform* transform = new Transform();
-	transforms.push_back(transform);
-
-	return transform;
-}
-
-void ModelAnimator::UpdateTransforms()
-{
-	for (UINT i = 0; i < transforms.size(); i++)
-		memcpy(worlds[i], transforms[i]->World(), sizeof(Matrix));
-
-	D3D11_MAPPED_SUBRESOURCE subResource;
-	D3D::GetDC()->Map(instanceBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-	{
-		memcpy(subResource.pData, worlds, sizeof(Matrix) * MAX_MESH_INSTANCE);
-	}
-	D3D::GetDC()->Unmap(instanceBuffer->Buffer(), 0);
-}
-
 void ModelAnimator::Pass(UINT pass)
 {
-	for (ModelMesh* mesh : model->Meshes()) 
+	for (ModelMesh* mesh : model->Meshes())
 		mesh->Pass(pass);
 }
 
 void ModelAnimator::PlayTweenMode(UINT index, UINT clip, float speed, float takeTime)
 {
 	blendDesc[index].Mode = 0;
+
 	tweenDesc[index].TakeTime = takeTime;
-	tweenDesc[index].Next.clip = clip;
+	tweenDesc[index].Next.Clip = clip;
 	tweenDesc[index].Next.Speed = speed;
 }
 
-void ModelAnimator::PlayBlendMode(UINT index, UINT clip1, UINT clip2, UINT clip3)
+void ModelAnimator::PlayBlendMode(UINT index, UINT clip, UINT clip1, UINT clip2)
 {
 	blendDesc[index].Mode = 1;
 
-	blendDesc[index].Clip[0].clip = clip1;
-	blendDesc[index].Clip[1].clip = clip2;
-	blendDesc[index].Clip[2].clip = clip3;
+	blendDesc[index].Clip[0].Clip = clip;
+	blendDesc[index].Clip[1].Clip = clip1;
+	blendDesc[index].Clip[2].Clip = clip2;
 }
 
 void ModelAnimator::SetBlendAlpha(UINT index, float alpha)
@@ -212,12 +226,36 @@ void ModelAnimator::SetBlendAlpha(UINT index, float alpha)
 	blendDesc[index].Alpha = alpha;
 }
 
+void ModelAnimator::SetAttachTransform(UINT boneIndex)
+{
+	attachDesc.BoneIndex = boneIndex;
+}
+
+void ModelAnimator::GetAttachTransform(UINT instance, Matrix* outResult)
+{
+	if (csOutput == NULL)
+	{
+		D3DXMatrixIdentity(outResult);
+
+		return;
+	}
+
+
+	Matrix transform = model->BoneByIndex(attachDesc.BoneIndex)->Transform(); //기준 본 행렬
+	Matrix result = csOutput[instance].Result; //애니메이션 행렬
+	Matrix world = GetTransform(instance)->World();
+
+	*outResult = transform * result * world;
+}
+
 void ModelAnimator::CreateTexture()
 {
 	//Matrix matrix[MAX_MODEL_KEYFRAMES][MAX_MODEL_TRANSFORMS];
+
 	clipTransforms = new ClipTransform[model->ClipCount()];
 	for (UINT i = 0; i < model->ClipCount(); i++)
 		CreateClipTransform(i);
+
 
 	//Create Texture
 	{
@@ -226,17 +264,17 @@ void ModelAnimator::CreateTexture()
 		desc.Width = MAX_MODEL_TRANSFORMS * 4;
 		desc.Height = MAX_MODEL_KEYFRAMES;
 		desc.ArraySize = model->ClipCount();
-		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; //16Byte * 4 = 64Byte
 		desc.Usage = D3D11_USAGE_IMMUTABLE;
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 		desc.MipLevels = 1;
 		desc.SampleDesc.Count = 1;
 
 		UINT pageSize = MAX_MODEL_TRANSFORMS * 4 * 16 * MAX_MODEL_KEYFRAMES;
-
-		// 예약
+		//void* p = malloc(pageSize * model->ClipCount());
 		void* p = VirtualAlloc(NULL, pageSize * model->ClipCount(), MEM_RESERVE, PAGE_READWRITE);
-		//MEMORY_BASIC_INFORMATION, VirtualQuery : 실제로 예약된 사이즈를 알 수 있다.
+
+		//MEMORY_BASIC_INFORMATION, VirtualQuery
 
 		for (UINT c = 0; c < model->ClipCount(); c++)
 		{
@@ -244,27 +282,30 @@ void ModelAnimator::CreateTexture()
 
 			for (UINT k = 0; k < MAX_MODEL_KEYFRAMES; k++)
 			{
-				void* temp = (BYTE*)p + start + (MAX_MODEL_TRANSFORMS * k * sizeof(Matrix));
+				void* temp = (BYTE*)p + MAX_MODEL_TRANSFORMS * k * sizeof(Matrix) + start;
 
-				// 사용선언
 				VirtualAlloc(temp, MAX_MODEL_TRANSFORMS * sizeof(Matrix), MEM_COMMIT, PAGE_READWRITE);
 				memcpy(temp, clipTransforms[c].Transform[k], MAX_MODEL_TRANSFORMS * sizeof(Matrix));
 			}
 		}//for(c)
 
+
 		D3D11_SUBRESOURCE_DATA* subResources = new D3D11_SUBRESOURCE_DATA[model->ClipCount()];
 		for (UINT c = 0; c < model->ClipCount(); c++)
 		{
-			void* temp = (BYTE*)p + c * pageSize; 
+			void* temp = (BYTE*)p + c * pageSize;
+
 			subResources[c].pSysMem = temp;
 			subResources[c].SysMemPitch = MAX_MODEL_TRANSFORMS * sizeof(Matrix);
 			subResources[c].SysMemSlicePitch = pageSize;
 		}
 		Check(D3D::GetDevice()->CreateTexture2D(&desc, subResources, &texture));
 
+
 		SafeDeleteArray(subResources);
 		VirtualFree(p, 0, MEM_RELEASE);
 	}
+
 
 	//Create SRV
 	{
@@ -293,6 +334,7 @@ void ModelAnimator::CreateClipTransform(UINT index)
 		{
 			ModelBone* bone = model->BoneByIndex(b);
 
+
 			Matrix parent;
 			Matrix invGlobal = bone->Transform();
 			D3DXMatrixInverse(&invGlobal, NULL, &invGlobal);
@@ -302,6 +344,7 @@ void ModelAnimator::CreateClipTransform(UINT index)
 				D3DXMatrixIdentity(&parent);
 			else
 				parent = bones[parentIndex];
+
 
 			Matrix animation;
 			ModelKeyframe* frame = clip->Keyframe(bone->Name());
@@ -326,4 +369,57 @@ void ModelAnimator::CreateClipTransform(UINT index)
 			clipTransforms[index].Transform[f][b] = invGlobal * bones[b];
 		}//for(b)
 	}//for(f)
+}
+
+void ModelAnimator::CreateComputeBuffer()
+{
+	UINT clipCount = model->ClipCount();
+	UINT inSize = clipCount * MAX_MODEL_KEYFRAMES * MAX_MODEL_TRANSFORMS;
+	UINT outSize = MAX_MODEL_INSTANCE;
+
+	csInput = new CS_InputDesc[inSize];
+
+
+	UINT count = 0;
+	for (UINT clipIndex = 0; clipIndex < clipCount; clipIndex++)
+	{
+		for (UINT frameIndex = 0; frameIndex < MAX_MODEL_KEYFRAMES; frameIndex++)
+		{
+			for (UINT boneIndex = 0; boneIndex < MAX_MODEL_TRANSFORMS; boneIndex++)
+			{
+				csInput[count].Bone = clipTransforms[clipIndex].Transform[frameIndex][boneIndex];
+
+				count++;
+			}
+		}//for(frameIndex)
+	}//for(clipIndex)
+
+
+	computeBuffer = new StructuredBuffer(csInput, sizeof(CS_InputDesc), inSize, sizeof(CS_OutputDesc), outSize);
+
+	csOutput = new CS_OutputDesc[outSize];
+
+	for (UINT i = 0; i < outSize; i++)
+		D3DXMatrixIdentity(&csOutput[i].Result);
+}
+
+Transform* ModelAnimator::AddTransform()
+{
+	Transform* transform = new Transform();
+	transforms.push_back(transform);
+
+	return transform;
+}
+
+void ModelAnimator::UpdateTransforms()
+{
+	for (UINT i = 0; i < transforms.size(); i++)
+		memcpy(worlds[i], transforms[i]->World(), sizeof(Matrix));
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(instanceBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, worlds, sizeof(Matrix) * MAX_MESH_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceBuffer->Buffer(), 0);
 }

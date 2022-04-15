@@ -1,7 +1,7 @@
 #pragma once
 #include "Systems/IExecute.h"
 
-class InstancingFrameworkDemo : public IExecute
+class GetAnimationBoneDemo : public IExecute
 {
 public:
 	virtual void Initialize() override;
@@ -17,6 +17,7 @@ private:
 	void Mesh();
 	void Airplane();
 	void Kachujin();
+	void KachujinCollider();
 
 	void Pass(UINT mesh, UINT model, UINT anim);
 
@@ -36,8 +37,10 @@ private:
 	MeshRender* grid;
 
 	ModelRender* airplane = NULL;
-
 	ModelAnimator* kachujin = NULL;
+
+	ColliderObject** colliders;
+	
 
 	vector<MeshRender*> meshes;
 	vector<ModelRender*> models;

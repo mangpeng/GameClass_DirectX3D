@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "InstancingFrameworkDemo.h"
+#include "GetAnimationBoneDemo.h"
 
-void InstancingFrameworkDemo::Initialize()
+void GetAnimationBoneDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(1, 36, -85);
@@ -14,9 +14,10 @@ void InstancingFrameworkDemo::Initialize()
 	Mesh();
 	Airplane();
 	Kachujin();
+	KachujinCollider();
 }
 
-void InstancingFrameworkDemo::Update()
+void GetAnimationBoneDemo::Update()
 {
 	sky->Update();
 
@@ -27,9 +28,18 @@ void InstancingFrameworkDemo::Update()
 
 	airplane->Update();
 	kachujin->Update();
+
+	for (UINT i = 0; i < kachujin->GetTransformCount(); i++)
+	{
+		Matrix attach;
+		kachujin->GetAttachTransform(i, &attach);
+
+		colliders[i]->Collider->GetTransform()->World(attach);
+		colliders[i]->Collider->Update();
+	}
 }
 
-void InstancingFrameworkDemo::Render()
+void GetAnimationBoneDemo::Render()
 {
 	sky->Render();
 
@@ -49,10 +59,13 @@ void InstancingFrameworkDemo::Render()
 	grid->Render();
 
 	airplane->Render();
+
 	kachujin->Render();
+	for (UINT i = 0; i < kachujin->GetTransformCount(); i++)
+		colliders[i]->Collider->Render();
 }
 
-void InstancingFrameworkDemo::Mesh()
+void GetAnimationBoneDemo::Mesh()
 {
 	//Create Material
 	{
@@ -129,7 +142,7 @@ void InstancingFrameworkDemo::Mesh()
 	meshes.push_back(grid);
 }
 
-void InstancingFrameworkDemo::Airplane()
+void GetAnimationBoneDemo::Airplane()
 {
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
@@ -143,7 +156,7 @@ void InstancingFrameworkDemo::Airplane()
 	models.push_back(airplane);
 }
 
-void InstancingFrameworkDemo::Kachujin()
+void GetAnimationBoneDemo::Kachujin()
 {
 	kachujin = new ModelAnimator(shader);
 	kachujin->ReadMesh(L"Kachujin/Mesh");
@@ -184,11 +197,30 @@ void InstancingFrameworkDemo::Kachujin()
 	kachujin->PlayTweenMode(4, 4, 0.75f);
 
 	kachujin->UpdateTransforms();
+	kachujin->SetAttachTransform(40);
 
 	animators.push_back(kachujin);
 }
 
-void InstancingFrameworkDemo::Pass(UINT mesh, UINT model, UINT anim)
+void GetAnimationBoneDemo::KachujinCollider()
+{
+	UINT count = kachujin->GetTransformCount();
+	colliders = new  ColliderObject * [count];
+
+	for (UINT i = 0; i < count; i++)
+	{
+		colliders[i] = new ColliderObject();
+
+		colliders[i]->Init = new Transform();
+		colliders[i]->Init->Position(0, 0, 0);
+		colliders[i]->Init->Scale(10, 200, 10);
+
+		colliders[i]->Transform = new Transform();
+		colliders[i]->Collider = new Collider(colliders[i]->Transform, colliders[i]->Init);
+	}
+}
+
+void GetAnimationBoneDemo::Pass(UINT mesh, UINT model, UINT anim)
 {
 	for (MeshRender* temp : meshes)
 		temp->Pass(mesh);

@@ -81,6 +81,9 @@
     <ClInclude Include="InstancingFrameworkDemo.h">
       <Filter>Instancing</Filter>
     </ClInclude>
+    <ClInclude Include="GetAnimationBoneDemo.h">
+      <Filter>DirectCompute</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -162,6 +165,9 @@
     </ClCompile>
     <ClCompile Include="InstancingFrameworkDemo.cpp">
       <Filter>Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="GetAnimationBoneDemo.cpp">
+      <Filter>DirectCompute</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
