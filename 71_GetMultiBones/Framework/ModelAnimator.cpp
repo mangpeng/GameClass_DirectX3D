@@ -43,7 +43,7 @@ ModelAnimator::ModelAnimator(Shader* shader)
 
 		sOutputUAV = computeShader->AsUAV("Output");
 
-		sTransformsSRV = computeShader->AsSRV("TransformsMap");
+		sTransformsSRV = computeShader->AsSRV("TransformsMaps");
 		sComputeTweenBuffer = computeShader->AsConstantBuffer("CB_TweenFrame");
 		sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendFrame");
 

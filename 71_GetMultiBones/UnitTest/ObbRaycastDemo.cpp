@@ -205,14 +205,14 @@ void ObbRaycastDemo::Kachujin()
 	kachujin->PlayTweenMode(4, 4, 0.75f);
 
 	kachujin->UpdateTransforms();
-	kachujin->SetAttachTransform(40);
+	//kachujin->SetAttachTransform(40);
 
 	animators.push_back(kachujin);
 }
 
 void ObbRaycastDemo::KachujinCollider()
 {
-	UINT count = kachujin->GetTransformCount();
+	/*UINT count = kachujin->GetTransformCount();
 	colliders = new  ColliderObject * [count];
 
 	for (UINT i = 0; i < count; i++)
@@ -225,7 +225,7 @@ void ObbRaycastDemo::KachujinCollider()
 
 		colliders[i]->Transform = new Transform();
 		colliders[i]->Collider = new Collider(colliders[i]->Transform, colliders[i]->Init);
-	}
+	}*/
 }
 
 void ObbRaycastDemo::CheckIntersection()

@@ -48,7 +48,7 @@ void TextureDemo::Initialize()
 	Check(D3DX11CreateShaderResourceViewFromFile
 	(
 		D3D::GetDevice(),
-		L"../../_Texture/Box.png",
+		L"../../_Textures/Box.png",
 		NULL,
 		NULL,
 		&srv,

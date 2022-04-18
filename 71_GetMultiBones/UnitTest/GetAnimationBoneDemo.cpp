@@ -197,7 +197,7 @@ void GetAnimationBoneDemo::Kachujin()
 	kachujin->PlayTweenMode(4, 4, 0.75f);
 
 	kachujin->UpdateTransforms();
-	kachujin->SetAttachTransform(40);
+	//kachujin->SetAttachTransform(40);
 
 	animators.push_back(kachujin);
 }

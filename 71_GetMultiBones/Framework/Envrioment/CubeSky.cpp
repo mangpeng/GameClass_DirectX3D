@@ -7,7 +7,7 @@ CubeSky::CubeSky(wstring file)
 	sphere = new MeshRender(shader, new MeshSphere(0.5f));
 	sphere->AddTransform();
 
-	file = L"../../_Texture/" + file;
+	file = L"../../_Textures/" + file;
 	Check(D3DX11CreateShaderResourceViewFromFile
 	(
 		D3D::GetDevice(), file.c_str(), NULL, NULL, &srv, NULL

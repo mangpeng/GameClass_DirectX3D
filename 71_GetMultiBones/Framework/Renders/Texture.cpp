@@ -10,10 +10,10 @@ Texture::Texture(wstring file, D3DX11_IMAGE_LOAD_INFO* loadInfo)
 {
 	bool b = Path::IsRelativePath(file);
 	if (b == true)
-		this->file = L"../../_Texture/" + file;
+		this->file = L"../../_Textures/" + file;
 
 	Textures::Load(this, loadInfo);
-	String::Replace(&this->file, L"../../_Texture", L"");
+	String::Replace(&this->file, L"../../_Textures", L"");
 }
 
 Texture::~Texture()
