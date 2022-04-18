@@ -43,6 +43,11 @@ MaterialDesc MakeMaterial()
     return output;
 }
 
+float3 MaterialToColor(MaterialDesc result)
+{
+    return (result.Ambient + result.Diffuse + result.Specular).rgb;
+}
+
 //////////////////////////////////////////////////////////////////
 void Texture(inout float4 color, Texture2D t, float2 uv, SamplerState samp)
 {
@@ -63,11 +68,22 @@ void ComputeLight(out MaterialDesc output, float3 normal, float3 wPosition)
     float NdotL = dot(direction, normalize(normal));
     
     output.Ambient = GlobalLight.Ambient * Material.Ambient;
+    float3 E = normalize(ViewPosition() - wPosition);
     
     [flatten]
     if(NdotL > 0.0f)
     {
         output.Diffuse = Material.Diffuse * NdotL;
+        
+        [flatten]
+        if(Material.Specular.a > 0.0f)
+        {
+            float3 R = normalize(reflect(-direction, normal));
+            float RDotE = saturate(dot(R, E));
+            
+            float specular = pow(RDotE, Material.Specular.a);
+            output.Specular = Material.Specular * specular * GlobalLight.Specular;
+        }
     }
 
 }

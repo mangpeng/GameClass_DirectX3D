@@ -2,36 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "GetMultiBoneDemo.h"
-#include "ObbCollisionDemo.h"
-#include "ObbRaycastDemo.h"
-#include "GetRaycastDemo.h"
-#include "ProjectionDemo.h"
-#include "ViewportDemo.h"
-#include "GetAnimationBoneDemo.h"
-#include "InstancingFrameworkDemo.h"
-#include "TextureBufferDemo.h"
-#include "RawBufferDemo.h"
-#include "ThreadDemo.h"
-#include "InstancingDemo.h"
-#include "CubeSkyDemo.h"
+#include "LightingDemo.h"
 
 void Main::Initialize()
 {
-	
-	Push(new GetMultiBoneDemo());
-	//Push(new ObbCollisionDemo());
-	//Push(new ObbRaycastDemo());
-	//Push(new GetRaycastDemo());
-	//Push(new ProjectionDemo());
-	//Push(new ViewportDemo());
-	//Push(new GetAnimationBoneDemo());
-	//Push(new InstancingFrameworkDemo());
-	//Push(new TextureBufferDemo());
-	//Push(new RawBufferDemo());
-	//Push(new ThreadDemo());
-	//Push(new InstancingDemo());
-	//Push(new CubeSkyDemo());
+	Push(new LightingDemo());
 } 
 
 void Main::Ready()
