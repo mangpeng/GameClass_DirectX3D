@@ -4,7 +4,8 @@ struct VertexMesh
     float2 Uv : Uv;
     float3 Normal : Normal;
     
-    matrix Transform : InstTransform;
+    matrix Transform : Inst1_Transform;
+    float4 Color : Inst2_Color;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -17,7 +18,8 @@ output.Position = ViewProjection(output.Position);\
 \
 output.Normal = WorldNormal(input.Normal);\
 \
-output.Uv = input.Uv;
+output.Uv = input.Uv;\
+output.Color = input.Color;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -48,8 +50,10 @@ struct VertexModel
     float4 BlendIndices : BlendIndices;
     float4 BlendWeights : BlendWeights;
     
-    matrix Transform : InstTransform;
     uint InstanceId : SV_InstanceID;
+    
+    matrix Transform : Inst1_Transform;
+    float4 Color : Inst2_Color;
 };
 
 Texture2DArray TransformsMaps;
