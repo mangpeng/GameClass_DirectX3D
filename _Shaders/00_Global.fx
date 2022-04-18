@@ -41,6 +41,10 @@ float3 WorldNormal(float3 normal)
     return mul(normal, (float3x3)World);
 }
 
+float3 ViewPosition()
+{
+    return ViewInverse._41_42_43;
+}
 /////////////////////////////////////////////////////////////////////////////
 
 struct Vertex
@@ -79,10 +83,11 @@ struct MeshOutput
 {
     float4 Position : SV_Position0; // 래스터라이징이 완료된 포지션
     float3 oPosition : Position1; // 오리지널 포지션
+    float3 wPosition : Position2; // 월드 포지션
     
-    float4 Color : Color;
     float3 Normal : Normal;
     float2 Uv : Uv;
+    float4 Color : Color;
 };
 /////////////////////////////////////////////////////////////////////////////
 
