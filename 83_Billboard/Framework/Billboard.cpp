@@ -2,13 +2,13 @@
 #include "Billboard.h"
 
 Billboard::Billboard(wstring file)
-	:Renderer(shader)
+	:Renderer(L"83_Billboard.fx")
 {
-	UINT vertexCount = MAX_BILLBOARD_COUNT * 4;
+	vertexCount = MAX_BILLBOARD_COUNT * 4;
 	vertices = new VertexBillboard[vertexCount];
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(VertexBillboard), 0, true);
 
-	UINT indexCount = MAX_BILLBOARD_COUNT * 6;
+	indexCount = MAX_BILLBOARD_COUNT * 6;
 	indices = new UINT[indexCount];
 	for (UINT i = 0; i < MAX_BILLBOARD_COUNT; i++)
 	{
@@ -20,20 +20,42 @@ Billboard::Billboard(wstring file)
 		indices[i * 6 + 5] = i * 4 + 3;
 	}
 	indexBuffer = new IndexBuffer(indices, indexCount);
+
+	texture = new Texture(file);
+	sDiffuseMap = shader->AsSRV("DiffuseMap");
 }
 
 Billboard::~Billboard()
 {
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
+
+	SafeDelete(texture);
 }
 
 void Billboard::Update()
 {
+	Super::Update();
 }
 
 void Billboard::Render()
 {
+	if (drawCount != prevCount)
+	{
+		prevCount = drawCount;
+
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		D3D::GetDC()->Map(vertexBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+		{
+			memcpy(subResource.pData, vertices, sizeof(VertexBillboard) * vertexCount);
+		}
+		D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
+	}
+
+	Super::Render();
+
+	sDiffuseMap->SetResource(texture->SRV());
+	shader->DrawIndexed(0, Pass(), drawCount * 6);
 }
 
 void Billboard::Add(Vector3& position, Vector2& scale)

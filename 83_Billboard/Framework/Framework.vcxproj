@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Envrioment\CubeSky.cpp" />
@@ -67,6 +68,7 @@
     <ClCompile Include="Viewer\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Billboard.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Envrioment\CubeSky.h" />

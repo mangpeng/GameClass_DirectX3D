@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BillboardDemo.h" />
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="CubeSkyDemo.h" />
     <ClInclude Include="GetAnimationBoneDemo.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="WorldDemo3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BillboardDemo.cpp" />
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="CubeSkyDemo.cpp" />
     <ClCompile Include="GetAnimationBoneDemo.cpp" />

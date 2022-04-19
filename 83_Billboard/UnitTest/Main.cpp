@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "NormalMappingDemo.h"
+#include "BillboardDemo.h"
 
 void Main::Initialize()
 {
-	Push(new NormalMappingDemo());
+	Push(new BillboardDemo());
 } 
 
 void Main::Ready()

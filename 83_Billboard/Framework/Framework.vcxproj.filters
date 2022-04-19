@@ -155,6 +155,9 @@
     <ClCompile Include="Lighting.cpp">
       <Filter>Renders</Filter>
     </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>Objedts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -290,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="Lighting.h">
       <Filter>Renders</Filter>
+    </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Objedts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

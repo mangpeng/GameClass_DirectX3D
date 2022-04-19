@@ -27,7 +27,10 @@ private:
 	UINT* indices;
 
 	UINT drawCount = 0;
+	UINT prevCount = 0;
+
 	Texture* texture;
+	ID3DX11EffectShaderResourceVariable* sDiffuseMap;
 
 };
 

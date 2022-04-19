@@ -21,7 +21,8 @@ VertexOutput VS(VertexInput input)
     float4 position = WorldPosition(input.Position);
     
     float3 up = float3(0, 1, 0);
-    float3 forward = float3(0, 0, 1);
+    //float3 forward = float3(0, 0, 1);
+    float3 forward = position.xyz - ViewPosition();
     float3 right = normalize(cross(up, forward));
     
     position.xyz += (input.Uv.x - 0.5) * right * input.Scale.x;
@@ -38,10 +39,14 @@ float4 PS(VertexOutput input) : SV_Target
 {
     float4 diffuse = DiffuseMap.Sample(LinearSampler, input.Uv);
 
+    //clip(diffuse.a - 0.3f);
+    if (diffuse.a < 0.3)
+        discard;
+  
     return diffuse;
 }
 
-technique T11
+technique11 T0
 {
     P_VP(P0, VS, PS)
 }
