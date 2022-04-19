@@ -157,7 +157,39 @@ BlendState AlphaBlend_AlphaToCoverageEnable
     DestBlendAlpha[0] = Zero;
     BlendOpAlpha[0] = Add;
 
+    RenderTargetWriteMask[0] = 15; //0x0F
+};
+
+BlendState AdditiveBlend
+{
+    AlphaToCoverageEnable = false;
+
+    BlendEnable[0] = true;
+    SrcBlend[0] = One;
+    DestBlend[0] = One;
+    BlendOp[0] = ADD;
+
+    SrcBlendAlpha[0] = One;
+    DestBlendAlpha[0] = Zero;
+    BlendOpAlpha[0] = Add;
+
     RenderTargetWriteMask[0] = 15;
+};
+
+BlendState AdditiveBlend_AlphaToCoverageEnable
+{
+    AlphaToCoverageEnable = true;
+
+    BlendEnable[0] = true;
+    SrcBlend[0] = One;
+    DestBlend[0] = One;
+    BlendOp[0] = ADD;
+
+    SrcBlendAlpha[0] = One;
+    DestBlendAlpha[0] = Zero;
+    BlendOpAlpha[0] = Add;
+
+    RenderTargetWriteMask[0] = 15; //0x0F
 };
 
 ///////////////////////////////////////////////////////////////////////////////

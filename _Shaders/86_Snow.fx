@@ -9,7 +9,7 @@ cbuffer CB_Rain
     float DrawDistance;
 
     float3 Origin;
-    float CB_Rain_Padding;
+    float Turbulence;
 
     float3 Extent;
 };
@@ -18,7 +18,7 @@ struct VertexInput
 {
     float4 Position : Position;
     float2 Uv : Uv;
-    float2 Scale : Scale;
+    float Scale : Scale;
 };
 
 struct VertexOutput
