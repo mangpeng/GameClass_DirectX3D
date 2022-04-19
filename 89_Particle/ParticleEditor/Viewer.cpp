@@ -11,6 +11,7 @@ void Viewer::Initialize()
 	shader = new Shader(L"82_NormalMapping.fx");
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
 
+	particleSystem = new ParticleSystem(L"Fire");
 	Mesh();
 }
 

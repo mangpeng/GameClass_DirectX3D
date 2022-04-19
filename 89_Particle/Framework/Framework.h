@@ -118,3 +118,5 @@ typedef D3DXPLANE Plane;
 #include "Rain.h"
 #include "Snow.h"
 
+#include "ParticleData.h"
+#include "ParticleSystem.h"
