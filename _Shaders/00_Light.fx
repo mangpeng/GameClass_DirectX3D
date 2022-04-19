@@ -175,7 +175,90 @@ void ComputePointLight(inout MaterialDesc output, float3 normal, float3 wPositio
         }
         
         float temp = 1.0f / saturate(dist / PointLights[i].Range);
-        float att = temp * temp * PointLights[i].Intensity;
+        float att = temp * temp * (1.0f / max(1.0f - PointLights[i].Intensity, 1e-8f));
+        
+        output.Ambient += result.Ambient * temp;
+        output.Diffuse += result.Diffuse * att;
+        output.Specular += result.Specular * att;
+        output.Emissive += result.Emissive * att;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+#define MAX_SPOT_LIGHTS 256
+struct SpotLight
+{
+    float4 Ambient;
+    float4 Diffuse;
+    float4 Specular;
+    float4 Emissive;
+    
+    float3 Position;
+    float Range;
+    
+    float3 Direction;
+    float Angle;
+    
+    float Intensity;
+    float3 Padding;
+};
+
+cbuffer CB_SpotLights
+{
+    uint SpotLightCount;
+    float3 CB_SpotLights_Padding;
+    
+    SpotLight SpotLights[MAX_POINT_LIGHTS];
+};
+
+void ComputeSpotLight(inout MaterialDesc output, float3 normal, float3 wPosition)
+{
+    output = MakeMaterial();
+    MaterialDesc result = MakeMaterial();
+    
+    for (uint i = 0; i < SpotLightCount; i++)
+    {
+        float3 light = SpotLights[i].Position - wPosition;
+        float dist = length(light);
+        
+        [flatten]
+        if (dist > SpotLights[i].Range)
+            continue;
+        
+        light /= dist; //Normalize
+        
+        result.Ambient = SpotLights[i].Ambient * Material.Ambient;
+        float NdotL = dot(light, normalize(normal));
+        float3 E = normalize(ViewPosition() - wPosition);
+        
+        [flatten]
+        if (NdotL > 0.0f)
+        {
+            result.Diffuse = Material.Diffuse * NdotL * SpotLights[i].Diffuse;
+        
+            [flatten]
+            if (Material.Specular.a > 0.0f)
+            {
+                float3 R = normalize(reflect(-light, normal));
+                float RDotE = saturate(dot(R, E));
+            
+                float specular = pow(RDotE, Material.Specular.a);
+                result.Specular = Material.Specular * specular * SpotLights[i].Specular;
+            }
+        }
+    
+        [flatten]
+        if (Material.Emissive.a > 0.0f)
+        {
+            float NdotE = dot(E, normalize(normal));
+            float emissive = smoothstep(1.0f - Material.Emissive.a, 1.0f, 1.0f - saturate(NdotE));
+        
+            result.Emissive = Material.Emissive * emissive * SpotLights[i].Emissive;
+        }
+        
+        float temp = pow(saturate(dot(-light, SpotLights[i].Direction)), SpotLights[i].Angle);
+        float att = temp * (1.0f / max(1.0f - SpotLights[i].Intensity, 1e-8f));
         
         output.Ambient += result.Ambient * temp;
         output.Diffuse += result.Diffuse * att;
