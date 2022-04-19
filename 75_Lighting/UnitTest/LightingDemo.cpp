@@ -82,8 +82,8 @@ void LightingDemo::Update()
 	for (UINT i = 0; i < kachujin->GetTransformCount(); i++)
 	{
 		kachujin->GetAttachTransform(i, worlds);
-		colliders[i]->Collider->GetTransform()->World(worlds[40]);
-		colliders[i]->Collider->Update();
+		//colliders[i]->Collider->GetTransform()->World(worlds[40]);
+		//colliders[i]->Collider->Update();
 
 		weapon->GetTransform(i)->World(weaponInitTransform->World() * worlds[40]);
 	}
@@ -116,8 +116,8 @@ void LightingDemo::Render()
 
 	kachujin->Render();
 	weapon->Render();
-	for (UINT i = 0; i < kachujin->GetTransformCount(); i++)
-		colliders[i]->Collider->Render();
+	//for (UINT i = 0; i < kachujin->GetTransformCount(); i++)
+	//	colliders[i]->Collider->Render();
 }
 
 void LightingDemo::Mesh()
@@ -134,18 +134,21 @@ void LightingDemo::Mesh()
 		stone->DiffuseMap("Stones.png");
 		stone->SpecularMap("Stones_Specular.png");
 		stone->Specular(1, 1, 1, 20);
+		stone->Emissive(0.15, 0.15, 0.15f, 0.3f);
 		//stone->NormalMap("Stones_Normal.png");
 
 		brick = new Material(shader);
 		brick->DiffuseMap("Bricks.png");
 		brick->SpecularMap("Bricks_Specular.png");
 		brick->Specular(1, 0.3f, 0.3f, 20);
+		brick->Emissive(0.15, 0.15, 0.15f, 0.3f);
 		//brick->NormalMap("Bricks_Normal.png");
 
 		wall = new Material(shader);
 		wall->DiffuseMap("Wall.png");
 		wall->SpecularMap("Wall_Specular.png");
 		wall->Specular(1, 1, 1, 20);
+		wall->Emissive(0.15, 0.15, 0.15f, 0.3f);
 		//wall->NormalMap("Wall_Normal.png");
 	}
 
