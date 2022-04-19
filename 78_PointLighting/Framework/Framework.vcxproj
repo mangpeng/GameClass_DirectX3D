@@ -26,6 +26,7 @@
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Lighting.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Meshes\Mesh.cpp" />
     <ClCompile Include="Meshes\MeshCube.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Envrioment\CubeSky.h" />
     <ClInclude Include="Envrioment\Terrain.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Lighting.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\MeshCube.h" />

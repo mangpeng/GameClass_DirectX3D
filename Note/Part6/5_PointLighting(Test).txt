@@ -1,6 +1,13 @@
 =========================================================================
 오늘의 요약
 =========================================================================
+정리
+ComputeLight(output, input.Normal, input.wPosition);
+AddMaterial(result, output);
+ComputePointLight(output, input.Normal, input.wPosition);
+AddMaterial(result, output);
+Lighting 클래스(싱글톤)
+PerFrame
 
 =========================================================================
 오늘의 과제

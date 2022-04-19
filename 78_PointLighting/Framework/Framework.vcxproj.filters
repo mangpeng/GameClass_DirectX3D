@@ -152,6 +152,9 @@
     <ClCompile Include="Collider.cpp">
       <Filter>Objedts</Filter>
     </ClCompile>
+    <ClCompile Include="Lighting.cpp">
+      <Filter>Renders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -284,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Objedts</Filter>
+    </ClInclude>
+    <ClInclude Include="Lighting.h">
+      <Filter>Renders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

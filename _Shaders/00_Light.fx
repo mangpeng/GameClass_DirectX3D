@@ -43,6 +43,14 @@ MaterialDesc MakeMaterial()
     return output;
 }
 
+void AddMaterial(inout MaterialDesc result, MaterialDesc val)
+{
+    result.Ambient += val.Ambient;
+    result.Diffuse += val.Diffuse;
+    result.Specular += val.Specular;
+    result.Emissive += val.Emissive;
+}
+
 float3 MaterialToColor(MaterialDesc result)
 {
     return (result.Ambient + result.Diffuse + result.Specular + result.Emissive).rgb;
@@ -60,7 +68,7 @@ void Texture(inout float4 color, Texture2D t, float2 uv)
     Texture(color, t, uv, LinearSampler);
 }
 
-void ComputeLight(out MaterialDesc output, float3 n ormal, float3 wPosition)
+void ComputeLight(out MaterialDesc output, float3 normal, float3 wPosition)
 {
     output = MakeMaterial();
     
@@ -90,7 +98,7 @@ void ComputeLight(out MaterialDesc output, float3 n ormal, float3 wPosition)
     if(Material.Emissive.a > 0.0f)
     {
         float NdotE = dot(E, normalize(normal));
-        float emissive = smoothstep(1.0f - Material.Emissive, 1.0f, 1.0f - saturate(NdotE));
+        float emissive = smoothstep(1.0f - Material.Emissive.a, 1.0f, 1.0f - saturate(NdotE));
         
         output.Emissive = Material.Emissive * emissive;
     }
@@ -128,7 +136,7 @@ void ComputePointLight(inout MaterialDesc output, float3 normal, float3 wPositio
     
     for (uint i = 0; i < PointLightCount; i++)
     {
-        float3 light = PointLights[i].Position = wPosition;
+        float3 light = PointLights[i].Position - wPosition;
         float dist = length(light);
         
         [flatten]
@@ -149,7 +157,7 @@ void ComputePointLight(inout MaterialDesc output, float3 normal, float3 wPositio
             [flatten]
             if (Material.Specular.a > 0.0f)
             {
-                float3 R = normalize(reflect(-direction, normal));
+                float3 R = normalize(reflect(-light, normal));
                 float RDotE = saturate(dot(R, E));
             
                 float specular = pow(RDotE, Material.Specular.a);
@@ -161,12 +169,12 @@ void ComputePointLight(inout MaterialDesc output, float3 normal, float3 wPositio
         if (Material.Emissive.a > 0.0f)
         {
             float NdotE = dot(E, normalize(normal));
-            float emissive = smoothstep(1.0f - Material.Emissive, 1.0f, 1.0f - saturate(NdotE));
+            float emissive = smoothstep(1.0f - Material.Emissive.a, 1.0f, 1.0f - saturate(NdotE));
         
             result.Emissive = Material.Emissive * emissive * PointLights[i].Emissive;
         }
         
-        float tmep = 1.0f / saturate(dist / PointLights[i].Range);
+        float temp = 1.0f / saturate(dist / PointLights[i].Range);
         float att = temp * temp * PointLights[i].Intensity;
         
         output.Ambient += result.Ambient * temp;

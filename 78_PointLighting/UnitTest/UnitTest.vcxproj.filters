@@ -105,6 +105,9 @@
     <ClInclude Include="LightingDemo.h">
       <Filter>Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="PointLightingDemo.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -209,6 +212,9 @@
       <Filter>DirectCompute</Filter>
     </ClCompile>
     <ClCompile Include="LightingDemo.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightingDemo.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
   </ItemGroup>

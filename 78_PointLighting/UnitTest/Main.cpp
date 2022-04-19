@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "LightingDemo.h"
+#include "PointLightingDemo.h"
 
 void Main::Initialize()
 {
-	Push(new LightingDemo());
+	Push(new PointLightingDemo());
 } 
 
 void Main::Ready()
