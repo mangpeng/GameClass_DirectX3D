@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "BillboardDemo.h"
+#include "WeatherDemo.h"
 
 void Main::Initialize()
 {
-	Push(new BillboardDemo());
+	Push(new WeatherDemo());
 } 
 
 void Main::Ready()
@@ -78,5 +78,5 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR param, int 
 
 	SafeDelete(main);
 
-	return wParam;
+	return wParam;	
 }

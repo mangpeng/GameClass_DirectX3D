@@ -128,6 +128,37 @@ DepthStencilState DepthEnable_False
     DepthEnable = false;
 };
 
+BlendState AlphaBlend
+{
+    AlphaToCoverageEnable = false;
+
+    BlendEnable[0] = true;
+    SrcBlend[0] = SRC_ALPHA;
+    DestBlend[0] = INV_SRC_ALPHA;
+    BlendOp[0] = ADD;
+
+    SrcBlendAlpha[0] = One;
+    DestBlendAlpha[0] = Zero;
+    BlendOpAlpha[0] = Add;
+
+    RenderTargetWriteMask[0] = 15;
+};
+
+BlendState AlphaBlend_AlphaToCoverageEnable
+{
+    AlphaToCoverageEnable = true;
+
+    BlendEnable[0] = true;
+    SrcBlend[0] = SRC_ALPHA;
+    DestBlend[0] = INV_SRC_ALPHA;
+    BlendOp[0] = ADD;
+
+    SrcBlendAlpha[0] = One;
+    DestBlendAlpha[0] = Zero;
+    BlendOpAlpha[0] = Add;
+
+    RenderTargetWriteMask[0] = 15;
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Vertex / Pixel

@@ -158,6 +158,9 @@
     <ClCompile Include="Billboard.cpp">
       <Filter>Objedts</Filter>
     </ClCompile>
+    <ClCompile Include="Rain.cpp">
+      <Filter>Enviroment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -296,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="Billboard.h">
       <Filter>Objedts</Filter>
+    </ClInclude>
+    <ClInclude Include="Rain.h">
+      <Filter>Enviroment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

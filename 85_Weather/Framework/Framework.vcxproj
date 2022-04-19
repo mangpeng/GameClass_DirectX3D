@@ -42,6 +42,7 @@
     <ClCompile Include="ModelMesh.cpp" />
     <ClCompile Include="ModelRender.cpp" />
     <ClCompile Include="PerFrame.cpp" />
+    <ClCompile Include="Rain.cpp" />
     <ClCompile Include="Render2D.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="ModelMesh.h" />
     <ClInclude Include="ModelRender.h" />
     <ClInclude Include="PerFrame.h" />
+    <ClInclude Include="Rain.h" />
     <ClInclude Include="Render2D.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renders\Context.h" />
