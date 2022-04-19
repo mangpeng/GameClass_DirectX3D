@@ -31,10 +31,15 @@ private:
 	Shader* shader;
 	Billboard* billboard;
 
+	enum class WeatherType
+	{
+		None = 0, Rain, Snow, Count,
+	} weatherType;
 
 	CubeSky* sky;
 
 	Rain* rain;
+	Snow* snow;
 
 	Material* floor;
 	Material* stone;

@@ -12,6 +12,8 @@ void WeatherDemo::Initialize()
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
 	
 	rain = new Rain(Vector3(300, 100, 500), (UINT)1e+4f, L"Environment/Rain.png");
+	snow = new Snow(Vector3(300, 100, 500), (UINT)1e+4f, L"Environment/Snow.png");
+
 	Billboards(); 
 	
 	Mesh();
@@ -50,7 +52,19 @@ void WeatherDemo::Update()
 
 	weapon->UpdateTransforms();
 	weapon->Update();
-	rain->Update();
+
+	UINT WeatherSelected = (UINT)weatherType;
+
+	ImGui::Separator();
+	ImGui::InputInt("Weather Type", (int*)&WeatherSelected);
+	WeatherSelected %= (UINT)WeatherType::Count;
+	weatherType = (WeatherType)WeatherSelected;
+
+	switch (weatherType)
+	{
+	case WeatherType::Rain: rain->Update(); break;
+	case WeatherType::Snow: snow->Update(); break;
+	}
 }
 
 void WeatherDemo::Render()
@@ -77,7 +91,12 @@ void WeatherDemo::Render()
 
 	kachujin->Render();
 	weapon->Render();
-	rain->Render();
+
+	switch (weatherType)
+	{
+	case WeatherType::Rain: rain->Render(); break;
+	case WeatherType::Snow: snow->Render(); break;
+	}
 }
 
 void WeatherDemo::Billboards()

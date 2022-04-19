@@ -161,6 +161,9 @@
     <ClCompile Include="Rain.cpp">
       <Filter>Enviroment</Filter>
     </ClCompile>
+    <ClCompile Include="Snow.cpp">
+      <Filter>Enviroment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -301,6 +304,9 @@
       <Filter>Objedts</Filter>
     </ClInclude>
     <ClInclude Include="Rain.h">
+      <Filter>Enviroment</Filter>
+    </ClInclude>
+    <ClInclude Include="Snow.h">
       <Filter>Enviroment</Filter>
     </ClInclude>
   </ItemGroup>
