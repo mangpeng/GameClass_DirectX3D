@@ -41,6 +41,7 @@
     <ClCompile Include="ModelClip.cpp" />
     <ClCompile Include="ModelMesh.cpp" />
     <ClCompile Include="ModelRender.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PerFrame.cpp" />
     <ClCompile Include="Rain.cpp" />
     <ClCompile Include="Render2D.cpp" />
@@ -90,6 +91,8 @@
     <ClInclude Include="ModelClip.h" />
     <ClInclude Include="ModelMesh.h" />
     <ClInclude Include="ModelRender.h" />
+    <ClInclude Include="ParticleData.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PerFrame.h" />
     <ClInclude Include="Rain.h" />
     <ClInclude Include="Render2D.h" />
