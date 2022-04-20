@@ -22,6 +22,7 @@
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DepthStencil.cpp" />
     <ClCompile Include="Envrioment\CubeSky.cpp" />
     <ClCompile Include="Envrioment\Terrain.cpp" />
     <ClCompile Include="Framework.cpp">
@@ -50,6 +51,7 @@
     <ClCompile Include="Renders\DebugLine.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\Texture.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Gui.cpp" />
@@ -74,6 +76,7 @@
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="DepthStencil.h" />
     <ClInclude Include="Envrioment\CubeSky.h" />
     <ClInclude Include="Envrioment\Terrain.h" />
     <ClInclude Include="Framework.h" />
@@ -102,6 +105,7 @@
     <ClInclude Include="Renders\Shader.h" />
     <ClInclude Include="Renders\Texture.h" />
     <ClInclude Include="Renders\VertexLayouts.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Snow.h" />
     <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Gui.h" />
