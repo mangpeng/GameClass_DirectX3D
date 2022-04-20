@@ -128,6 +128,20 @@ DepthStencilState DepthEnable_False
     DepthEnable = false;
 };
 
+BlendState OpaqueBlend
+{
+    BlendEnable[0] = true;
+    SrcBlend[0] = One;
+    DestBlend[0] = Zero;
+    BlendOp[0] = ADD;
+    
+    SrcBlendAlpha[0] = One;
+    DestBlendAlpha[0] = Zero;
+    BlendOpAlpha[0] = Add;
+    
+    RenderTargetWriteMask[0] = 15; //Ox0F
+};
+
 BlendState AlphaBlend
 {
     AlphaToCoverageEnable = false;
@@ -174,6 +188,22 @@ BlendState AdditiveBlend
     BlendOpAlpha[0] = Add;
 
     RenderTargetWriteMask[0] = 15;
+};
+
+BlendState AdditiveBlend_Particle
+{
+    AlphaToCoverageEnable = false;
+    
+    BlendEnable[0] = true;
+    SrcBlend[0] = SRC_ALPHA;
+    DestBlend[0] = One;
+    BlendOp[0] = ADD;
+    
+    SrcBlendAlpha[0] = One;
+    DestBlendAlpha[0] = Zero;
+    BlendOpAlpha[0] = Add;
+    
+    RenderTargetWriteMask[0] = 15; //Ox0F
 };
 
 BlendState AdditiveBlend_AlphaToCoverageEnable
