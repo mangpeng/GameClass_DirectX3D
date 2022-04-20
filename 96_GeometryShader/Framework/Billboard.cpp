@@ -5,12 +5,12 @@ Billboard::Billboard(Shader* shader)
 	:Renderer(shader)
 {
 	Topology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-	sDiffuseMap = shader->AsSRV("DiffuseMap");
+	sDiffuseMap = shader->AsSRV("BillboardMap");
 }
 
 Billboard::~Billboard()
 {
-	SafeDelete(texture);
+	SafeDelete(textureArray);
 }
 
 void Billboard::Update()
@@ -20,6 +20,12 @@ void Billboard::Update()
 
 void Billboard::Render()
 {
+	if(textureNames.size() > 0 && textureArray == NULL)
+	{
+		SafeDelete(textureArray);
+		textureArray = new TextureArray(textureNames);
+	}
+
 	if (vertexCount != vertices.size())
 	{
 		vertexCount = vertices.size();
@@ -30,23 +36,22 @@ void Billboard::Render()
 
 	Super::Render();
 
-	sDiffuseMap->SetResource(texture->SRV());
+	sDiffuseMap->SetResource(textureArray->SRV());
 
-	shader->DrawIndexed(0, Pass(), vertexCount);
+	shader->Draw(0, Pass(), vertexCount);
 }
 
-void Billboard::Add(Vector3& position, Vector2& scale)
+void Billboard::Add(Vector3& position, Vector2& scale, UINT mapIndex)
 {
 	VertexBillboard vertex =
 	{
-		position, scale
+		position, scale, mapIndex
 	};
 
 	vertices.push_back(vertex);
 }
 
-void Billboard::SetTexture(wstring file)
+void Billboard::AddTexture(wstring file)
 {
-	SafeDelete(texture);
-	texture = new Texture(file);
+	textureNames.push_back(file);
 }

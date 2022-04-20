@@ -123,6 +123,11 @@ RasterizerState FillMode_WireFrame
     FillMode = WireFrame;
 };
 
+RasterizerState CullMode_None
+{
+    CullMode = None;
+};
+
 DepthStencilState DepthEnable_False
 {
     DepthEnable = false;
