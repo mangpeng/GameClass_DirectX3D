@@ -44,6 +44,7 @@
     <ClCompile Include="ModelRender.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PerFrame.cpp" />
+    <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Rain.cpp" />
     <ClCompile Include="Render2D.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="ParticleData.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PerFrame.h" />
+    <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Rain.h" />
     <ClInclude Include="Render2D.h" />
     <ClInclude Include="Renderer.h" />

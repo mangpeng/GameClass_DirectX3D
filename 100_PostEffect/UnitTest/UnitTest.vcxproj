@@ -167,7 +167,7 @@
     <ClInclude Include="ObbCollisionDemo.h" />
     <ClInclude Include="ObbRaycastDemo.h" />
     <ClInclude Include="PointLightingDemo.h" />
-    <ClInclude Include="PostEffectDemo.h" />
+    <ClInclude Include="ColorToneDemo.h" />
     <ClInclude Include="ProjectionDemo.h" />
     <ClInclude Include="RawBufferDemo.h" />
     <ClInclude Include="RectDemo.h" />
@@ -211,7 +211,7 @@
     <ClCompile Include="ObbCollisionDemo.cpp" />
     <ClCompile Include="ObbRaycastDemo.cpp" />
     <ClCompile Include="PointLightingDemo.cpp" />
-    <ClCompile Include="PostEffectDemo.cpp" />
+    <ClCompile Include="ColorToneDemo.cpp" />
     <ClCompile Include="ProjectionDemo.cpp" />
     <ClCompile Include="RawBufferDemo.cpp" />
     <ClCompile Include="RectDemo.cpp" />

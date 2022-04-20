@@ -19,8 +19,6 @@ private:
 	//} desc;
 
 private:
-	UINT pass = 0;
-
 	//ConstantBuffer* buffer;
 	ID3DX11EffectShaderResourceVariable* sDiffuseMap;
 };

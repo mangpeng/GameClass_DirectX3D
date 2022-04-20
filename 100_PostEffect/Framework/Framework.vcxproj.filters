@@ -176,6 +176,9 @@
     <ClCompile Include="DepthStencil.cpp">
       <Filter>Viewer</Filter>
     </ClCompile>
+    <ClCompile Include="PostEffect.cpp">
+      <Filter>Objedts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -332,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="DepthStencil.h">
       <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="PostEffect.h">
+      <Filter>Objedts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

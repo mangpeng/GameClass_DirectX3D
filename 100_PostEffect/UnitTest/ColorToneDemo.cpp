@@ -7,11 +7,17 @@ void ColorToneDemo::Initialize()
 	Context::Get()->GetCamera()->Position(1, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 
+
 	shader = new Shader(L"96_Billboard.fx");
 
-	renderTarget = new RenderTarget();
-	depthStencil = new DepthStencil();
-	viewport = new Viewport(D3D::Width(), D3D::Height());
+
+	float width = D3D::Width(), height = D3D::Height();
+	width = height = 4096;
+
+	renderTarget = new RenderTarget((UINT)width, (UINT)height);
+	depthStencil = new DepthStencil((UINT)width, (UINT)height);
+	viewport = new Viewport(width, height);
+
 
 	render2D = new Render2D();
 	render2D->GetTransform()->Scale(355, 200, 1);
@@ -21,14 +27,13 @@ void ColorToneDemo::Initialize()
 	postEffect = new PostEffect(L"100_ColorTone.fx");
 	postEffect->SRV(renderTarget->SRV());
 
-	sky = new CubeSky(L"Environment/GrassCube1024.dds");
-	
-	Billboards(); 
-	
-	Mesh();
 
+	sky = new CubeSky(L"Environment/GrassCube1024.dds");
+
+	Billboards();
+
+	Mesh();
 	Airplane();
-	Airplane2();
 
 	Kachujin();
 	KachujinCollider();
@@ -40,6 +45,110 @@ void ColorToneDemo::Initialize()
 
 void ColorToneDemo::Update()
 {
+	static UINT Pass = postEffect->GetShader()->PassCount() - 1;
+	ImGui::InputInt("ColorTone Pass", (int*)&Pass);
+	Pass %= postEffect->GetShader()->PassCount();
+	postEffect->Pass(Pass);
+
+
+	Vector2 PixelSize = Vector2(1.0f / D3D::Width(), 1.0f / D3D::Height());
+	postEffect->GetShader()->AsVector("PixelSize")->SetFloatVector(PixelSize);
+
+
+	//Saturation
+	{
+		ImGui::Separator();
+
+		static float Saturation = 0.0f;
+		ImGui::InputFloat("Saturation", &Saturation, 0.1f);
+		postEffect->GetShader()->AsScalar("Saturation")->SetFloat(Saturation);
+	}
+
+	//Sharpness
+	{
+		ImGui::Separator();
+
+		static float Sharpness = 0.0f;
+		ImGui::InputFloat("Sharpness", &Sharpness, 0.1f);
+		postEffect->GetShader()->AsScalar("Sharpness")->SetFloat(Sharpness);
+	}
+
+	//Vignette
+	{
+		ImGui::Separator();
+
+		static float Power = 1.0f;
+		ImGui::InputFloat("Power", &Power, 0.1f);
+		postEffect->GetShader()->AsScalar("Power")->SetFloat(Power);
+
+		static float ScaleX = 1.0f;
+		ImGui::InputFloat("ScaleX", &ScaleX, 0.1f);
+
+		static float ScaleY = 1.0f;
+		ImGui::InputFloat("ScaleY", &ScaleY, 0.1f);
+		postEffect->GetShader()->AsVector("Scale")->SetFloatVector(Vector2(ScaleX, ScaleY));
+	}
+
+	//LensDistortion
+	{
+		ImGui::Separator();
+
+		static float LensPower = 1.0f;
+		ImGui::InputFloat("LensPower", &LensPower, 0.01f);
+		postEffect->GetShader()->AsScalar("LensPower")->SetFloat(LensPower);
+
+		static Vector3 Distortion = Vector3(-0.02f, -0.02f, -0.02f);
+		ImGui::InputFloat("DistortionX", &Distortion.x, 0.001f);
+		ImGui::InputFloat("DistortionY", &Distortion.y, 0.001f);
+		ImGui::InputFloat("DistortionZ", &Distortion.z, 0.001f);
+		postEffect->GetShader()->AsVector("Distortion")->SetFloatVector(Distortion);
+	}
+
+	//Interace
+	{
+		ImGui::Separator();
+
+		static float Strength = 1.0f;
+		ImGui::InputFloat("Strength", &Strength, 0.01f);
+		postEffect->GetShader()->AsScalar("Strength")->SetFloat(Strength);
+
+		static int InteraceValue = 2;
+		ImGui::InputInt("InteraceValue", &InteraceValue);
+		postEffect->GetShader()->AsScalar("interaceValue")->SetInt(InteraceValue);
+	}
+
+	//Down Scale
+	{
+		ImGui::Separator();
+
+		static float ScaleX = D3D::Width();
+		ImGui::InputFloat("DownScaleX", &ScaleX, 1.0f);
+
+		static float ScaleY = D3D::Height();
+		ImGui::InputFloat("DownScaleY", &ScaleY, 1.0f);
+		postEffect->GetShader()->AsVector("ScaleSourceSize")->SetFloatVector(Vector2(ScaleX, ScaleY));
+	}
+
+	//Wiggle
+	{
+		ImGui::Separator();
+
+		static float OffsetX = 10;
+		ImGui::InputFloat("OffsetX", &OffsetX, 0.1f);
+
+		static float OffsetY = 10;
+		ImGui::InputFloat("OffsetY", &OffsetY, 0.1f);
+		postEffect->GetShader()->AsVector("WiggleOffset")->SetFloatVector(Vector2(OffsetX, OffsetY));
+
+		static float AmountX = 0.01f;
+		ImGui::InputFloat("AmountX", &AmountX, 0.001f);
+
+		static float AmountY = 0.01f;
+		ImGui::InputFloat("AmountY", &AmountY, 0.001f);
+		postEffect->GetShader()->AsVector("WiggleAmount")->SetFloatVector(Vector2(AmountX, AmountY));
+	}
+
+
 	sky->Update();
 
 	cube->Update();
@@ -48,7 +157,6 @@ void ColorToneDemo::Update()
 	sphere->Update();
 
 	airplane->Update();
-	airplane2->Update();
 	kachujin->Update();
 
 	Matrix worlds[MAX_MODEL_TRANSFORMS];
@@ -62,15 +170,21 @@ void ColorToneDemo::Update()
 	weapon->Update();
 
 	billboard->Update();
+
 	render2D->Update();
+	postEffect->Update();
 }
 
 void ColorToneDemo::PreRender()
 {
 	renderTarget->PreRender(depthStencil);
+	viewport->RSSetViewport();
 
+
+	//Render
 	{
 		sky->Render();
+
 
 		Pass(0, 1, 2);
 
@@ -87,7 +201,6 @@ void ColorToneDemo::PreRender()
 		grid->Render();
 
 		airplane->Render();
-		airplane2->Render();
 
 		kachujin->Render();
 		weapon->Render();
@@ -98,8 +211,7 @@ void ColorToneDemo::PreRender()
 
 void ColorToneDemo::Render()
 {
-	//if (Keyboard::Get()->Down(VK_SPACE))
-	//	renderTarget->SaveTexture(L"../RenderTarget.png");
+
 }
 
 void ColorToneDemo::PostRender()
@@ -111,14 +223,12 @@ void ColorToneDemo::PostRender()
 void ColorToneDemo::Billboards()
 {
 	billboard = new Billboard(shader);
-
 	//billboard->Pass(3);
 	billboard->Pass(4);
 
 	billboard->AddTexture(L"Terrain/grass_14.tga");
 	billboard->AddTexture(L"Terrain/grass_07.tga");
 	billboard->AddTexture(L"Terrain/grass_11.tga");
-
 
 	for (UINT i = 0; i < 1200; i++)
 	{
@@ -151,29 +261,30 @@ void ColorToneDemo::Mesh()
 	{
 		floor = new Material(shader);
 		floor->DiffuseMap("Floor.png");
-		floor->SpecularMap("Floor_Specular.png");
 		floor->Specular(1, 1, 1, 20);
+		floor->SpecularMap("Floor_Specular.png");
 		floor->NormalMap("Floor_Normal.png");
 
 		stone = new Material(shader);
 		stone->DiffuseMap("Stones.png");
-		stone->SpecularMap("Stones_Specular.png");
 		stone->Specular(1, 1, 1, 20);
-		stone->Emissive(0.15, 0.15, 0.15f, 0.3f);
+		stone->SpecularMap("Stones_Specular.png");
+		stone->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 		stone->NormalMap("Stones_Normal.png");
+
 
 		brick = new Material(shader);
 		brick->DiffuseMap("Bricks.png");
-		brick->SpecularMap("Bricks_Specular.png");
 		brick->Specular(1, 0.3f, 0.3f, 20);
-		brick->Emissive(0.15, 0.15, 0.15f, 0.3f);
+		brick->SpecularMap("Bricks_Specular.png");
+		brick->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 		brick->NormalMap("Bricks_Normal.png");
 
 		wall = new Material(shader);
 		wall->DiffuseMap("Wall.png");
-		wall->SpecularMap("Wall_Specular.png");
 		wall->Specular(1, 1, 1, 20);
-		wall->Emissive(0.15, 0.15, 0.15f, 0.3f);
+		wall->SpecularMap("Wall_Specular.png");
+		wall->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 		wall->NormalMap("Wall_Normal.png");
 	}
 
@@ -237,20 +348,6 @@ void ColorToneDemo::Airplane()
 	airplane->UpdateTransforms();
 
 	models.push_back(airplane);
-}
-
-void ColorToneDemo::Airplane2()
-{
-	airplane2 = new ModelRender(shader);
-	airplane2->ReadMesh(L"Weapon/Sword");
-	airplane2->ReadMaterial(L"Weapon/Sword");
-
-	Transform* transform = airplane2->AddTransform();
-	transform->Position(2.0f, 30.0f, 2.0f);
-	transform->Scale(1.0f, 1.0f, 1.0f);
-	airplane2->UpdateTransforms();
-
-	models.push_back(airplane2);
 }
 
 void ColorToneDemo::Kachujin()

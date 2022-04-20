@@ -120,7 +120,7 @@
     <ClInclude Include="WeatherDemo.h">
       <Filter>Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="PostEffectDemo.h">
+    <ClInclude Include="ColorToneDemo.h">
       <Filter>PostEffects</Filter>
     </ClInclude>
   </ItemGroup>
@@ -244,7 +244,7 @@
     <ClCompile Include="WeatherDemo.cpp">
       <Filter>Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="PostEffectDemo.cpp">
+    <ClCompile Include="ColorToneDemo.cpp">
       <Filter>PostEffects</Filter>
     </ClCompile>
   </ItemGroup>
