@@ -12,20 +12,20 @@ public:
 	void Render();
 
 	void Add(Vector3& position, Vector2& scale);
+	void SetTexture(wstring file);
 
 private:
 
 	struct VertexBillboard
 	{
 		Vector3 Position;
-		Vector2 Uv;
 		Vector2 Scale;
 	};
 
 private:
 	vector<VertexBillboard> vertices;
 
-	Texture* texture;
+	Texture* texture = NULL;
 	ID3DX11EffectShaderResourceVariable* sDiffuseMap;
 
 };

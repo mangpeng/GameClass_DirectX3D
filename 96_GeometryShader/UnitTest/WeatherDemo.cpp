@@ -101,7 +101,7 @@ void WeatherDemo::Render()
 
 void WeatherDemo::Billboards()
 {
-	billboard = new Billboard(L"Terrain/grass_11.tga");
+	billboard = new Billboard(shader);
 
 	for (UINT i = 0; i < 1200; i++)
 	{

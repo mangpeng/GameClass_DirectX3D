@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "WeatherDemo.h"
+#include "BillboardDemo.h"
 
 void Main::Initialize()
 {
-	Push(new WeatherDemo());
+	Push(new BillboardDemo());
 } 
 
 void Main::Ready()

@@ -2,7 +2,7 @@
 #include "Billboard.h"
 
 Billboard::Billboard(Shader* shader)
-	:Renderer(L"83_Billboard.fx")
+	:Renderer(shader)
 {
 	Topology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	sDiffuseMap = shader->AsSRV("DiffuseMap");
@@ -20,7 +20,7 @@ void Billboard::Update()
 
 void Billboard::Render()
 {
-	if (vertexCount!= vertices.size())
+	if (vertexCount != vertices.size())
 	{
 		vertexCount = vertices.size();
 
@@ -31,6 +31,7 @@ void Billboard::Render()
 	Super::Render();
 
 	sDiffuseMap->SetResource(texture->SRV());
+
 	shader->DrawIndexed(0, Pass(), vertexCount);
 }
 
@@ -42,4 +43,10 @@ void Billboard::Add(Vector3& position, Vector2& scale)
 	};
 
 	vertices.push_back(vertex);
+}
+
+void Billboard::SetTexture(wstring file)
+{
+	SafeDelete(texture);
+	texture = new Texture(file);
 }

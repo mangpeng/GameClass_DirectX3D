@@ -7,7 +7,7 @@ void BillboardDemo::Initialize()
 	Context::Get()->GetCamera()->Position(1, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 
-	shader = new Shader(L"82_NormalMapping.fx");
+	shader = new Shader(L"96_Billboard.fx");
 
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
 
@@ -28,14 +28,7 @@ void BillboardDemo::Initialize()
 
 void BillboardDemo::Update()
 {
-	static UINT selected = 3;
-	ImGui::InputInt("NormalMap Selected", (int*)&selected);
-	selected %= 4;
-
-	shader->AsScalar("Selected")->SetInt(selected);
-
 	sky->Update();
-	billboard->Update();
 
 	cube->Update();
 	grid->Update();
@@ -55,12 +48,13 @@ void BillboardDemo::Update()
 
 	weapon->UpdateTransforms();
 	weapon->Update();
+
+	billboard->Update();
 }
 
 void BillboardDemo::Render()
 {
 	sky->Render();
-	billboard->Render();
 
 	Pass(0, 1, 2);
 
@@ -81,11 +75,15 @@ void BillboardDemo::Render()
 
 	kachujin->Render();
 	weapon->Render();
+
+	billboard->Render();
 }
 
 void BillboardDemo::Billboards()
 {
-	billboard = new Billboard(L"Terrain/grass_11.tga");
+	billboard = new Billboard(shader);
+	billboard->Pass(3);
+	billboard->SetTexture(L"Terrain/grass_14.tga");
 
 	for (UINT i = 0; i < 1200; i++)
 	{
