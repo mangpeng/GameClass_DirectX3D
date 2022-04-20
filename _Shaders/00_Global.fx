@@ -192,6 +192,13 @@ BlendState AdditiveBlend_AlphaToCoverageEnable
     RenderTargetWriteMask[0] = 15; //0x0F
 };
 
+DepthStencilState DepthRead_Particle
+{
+    DepthEnable = true;
+    DepthFunc = Less_Equal;
+    DepthWriteMask = 0;
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 // Vertex / Pixel
 ///////////////////////////////////////////////////////////////////////////////
