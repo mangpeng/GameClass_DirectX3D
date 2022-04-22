@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "ProjectorDemo.h"
+#include "ShadowDemo.h"
 
 void Main::Initialize()
 {
-	Push(new ProjectorDemo());
+	Push(new ShadowDemo());
 } 
 
 void Main::Ready()

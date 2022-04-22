@@ -17,6 +17,7 @@ Texture2D DiffuseMap;
 Texture2D SpecularMap;
 Texture2D NormalMap;
 TextureCube SkyCubeMap;
+Texture2D ShadowMap;
 
 struct MaterialDesc
 {
@@ -361,3 +362,17 @@ void PS_Projector(inout float4 color, float4 wvp)
         color = lerp(color, map, map.a);
     }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+cbuffer CB_Shadow
+{
+    matrix ShadowView;
+    matrix ShadowProjection;
+    
+    float2 ShadowMapSize;
+    float ShadowBias;
+    
+    uint ShadowQuality;
+};

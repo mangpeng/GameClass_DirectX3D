@@ -181,6 +181,7 @@
     <ClInclude Include="RawBufferDemo.h" />
     <ClInclude Include="RectDemo.h" />
     <ClInclude Include="RotationDemo.h" />
+    <ClInclude Include="ShadowDemo.h" />
     <ClInclude Include="SpotLightingDemo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextureBufferDemo.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="RawBufferDemo.cpp" />
     <ClCompile Include="RectDemo.cpp" />
     <ClCompile Include="RotationDemo.cpp" />
+    <ClCompile Include="ShadowDemo.cpp" />
     <ClCompile Include="SpotLightingDemo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

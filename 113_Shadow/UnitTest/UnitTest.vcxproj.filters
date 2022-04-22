@@ -144,6 +144,9 @@
     <ClInclude Include="ProjectorDemo.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowDemo.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -287,6 +290,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="ProjectorDemo.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowDemo.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>

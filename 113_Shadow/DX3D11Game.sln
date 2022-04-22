@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{57
 		..\_Shaders\106_Bloom.fx = ..\_Shaders\106_Bloom.fx
 		..\_Shaders\107_DynamicCubeMap.fx = ..\_Shaders\107_DynamicCubeMap.fx
 		..\_Shaders\111_Projector.fx = ..\_Shaders\111_Projector.fx
+		..\_Shaders\113_Shadow.fx = ..\_Shaders\113_Shadow.fx
 		..\_Shaders\71_GetMultiBones.fx = ..\_Shaders\71_GetMultiBones.fx
 		..\_Shaders\75_Lighting.fx = ..\_Shaders\75_Lighting.fx
 		..\_Shaders\78_PointLighting.fx = ..\_Shaders\78_PointLighting.fx

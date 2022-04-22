@@ -34,6 +34,28 @@ output.Color = input.Color;
 
 //////////////////////////////////////////////////////////////////////
 
+struct DepthOutput
+{
+    float4 Position : SV_Position;
+    float4 sPosition : Position1;
+};
+
+float4 PS_Depth(DepthOutput input) : SV_Target
+{
+    float depth = input.Position.z / input.Position.w;
+    
+    return float4(depth, depth, depth, 1.0f);
+}
+
+#define VS_DEPTH_GENERATE \
+output.Position = WorldPosition(input.Position);\
+output.Position = mul(output.Position, ShadowView); \
+output.Position = mul(output.Position, ShadowProjection); \
+\
+output.sPosition = output.Position;
+
+//////////////////////////////////////////////////////////////////////
+
 void SetMeshWorld(inout matrix world, VertexMesh input)
 {
     world = input.Transform;
@@ -45,6 +67,16 @@ MeshOutput VS_Mesh(VertexMesh input)
     
     SetMeshWorld(World, input);
     VS_GENERATE
+    
+    return output;
+}
+
+DepthOutput VS_Depth_Mesh(VertexMesh input)
+{
+    DepthOutput output;
+    
+    SetMeshWorld(World, input);
+    VS_DEPTH_GENERATE
     
     return output;
 }
@@ -94,6 +126,16 @@ MeshOutput VS_Model(VertexModel input)
     
     SetModelWorld(World, input);
     VS_GENERATE
+    
+    return output;
+}
+
+DepthOutput VS_Depth_Model(VertexModel input)
+{
+    DepthOutput output;
+    
+    SetModelWorld(World, input);
+    VS_DEPTH_GENERATE
     
     return output;
 }
@@ -295,3 +337,16 @@ MeshOutput VS_Animation(VertexModel input)
     return output;
 }
 
+DepthOutput VS_Depth_Animation(VertexModel input)
+{
+    DepthOutput output;
+    
+    if (BlendFrames[input.InstanceId].Mode == 0)
+        SetTweenWorld(World, input);
+    else
+        SetBlendWorld(World, input);
+    
+    VS_DEPTH_GENERATE
+    
+    return output;
+}

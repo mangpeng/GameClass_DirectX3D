@@ -56,6 +56,7 @@
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\Texture.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Gui.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Renders\Texture.h" />
     <ClInclude Include="Renders\VertexLayouts.h" />
     <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Snow.h" />
     <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Gui.h" />
