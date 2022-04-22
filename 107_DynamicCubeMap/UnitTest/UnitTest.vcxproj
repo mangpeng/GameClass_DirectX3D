@@ -151,6 +151,7 @@
     <ClInclude Include="BlurDemo.h" />
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="CubeSkyDemo.h" />
+    <ClInclude Include="DynamicCubeMapDemo.h" />
     <ClInclude Include="GaussianBlurDemo.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
@@ -202,6 +203,7 @@
     <ClCompile Include="BlurDemo.cpp" />
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="CubeSkyDemo.cpp" />
+    <ClCompile Include="DynamicCubeMapDemo.cpp" />
     <ClCompile Include="GaussianBlurDemo.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>

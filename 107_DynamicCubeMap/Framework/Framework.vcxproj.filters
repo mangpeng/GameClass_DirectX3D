@@ -179,6 +179,7 @@
     <ClCompile Include="PostEffect.cpp">
       <Filter>Objedts</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicCubeMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -339,5 +340,6 @@
     <ClInclude Include="PostEffect.h">
       <Filter>Objedts</Filter>
     </ClInclude>
+    <ClInclude Include="DynamicCubeMap.h" />
   </ItemGroup>
 </Project>

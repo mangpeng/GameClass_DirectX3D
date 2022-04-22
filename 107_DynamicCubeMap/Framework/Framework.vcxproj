@@ -23,6 +23,7 @@
     <ClCompile Include="Buffers.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DepthStencil.cpp" />
+    <ClCompile Include="DynamicCubeMap.cpp" />
     <ClCompile Include="Envrioment\CubeSky.cpp" />
     <ClCompile Include="Envrioment\Terrain.cpp" />
     <ClCompile Include="Framework.cpp">
@@ -78,6 +79,7 @@
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DepthStencil.h" />
+    <ClInclude Include="DynamicCubeMap.h" />
     <ClInclude Include="Envrioment\CubeSky.h" />
     <ClInclude Include="Envrioment\Terrain.h" />
     <ClInclude Include="Framework.h" />

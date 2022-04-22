@@ -7,10 +7,10 @@ float4 PS(MeshOutput input) : SV_Target
     return PS_AllLight(input);
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Billboard
 ///////////////////////////////////////////////////////////////////////////////
-
 struct VertexBillboard
 {
     float4 Position : Position;
@@ -131,16 +131,18 @@ float4 PS_Billboard(GeometryOutput input) : SV_Target
     return BillboardMap.Sample(LinearSampler, float3(input.Uv, input.MapIndex)) * 1.75f;
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Dynamic Cube Map
 ///////////////////////////////////////////////////////////////////////////////
 cbuffer CB_DynamicCube
 {
+    uint CubeRenderType;
+    float3 CB_DynamicCube_Padding;
+    
     matrix CubeViews[6];
     matrix CubeProjection;
-    uint CubeRenderType;
 };
-
 
 [maxvertexcount(18)]
 void GS_PreRender(triangle MeshOutput input[3], inout TriangleStream<MeshGeometryOutput> stream)
@@ -173,7 +175,6 @@ void GS_PreRender(triangle MeshOutput input[3], inout TriangleStream<MeshGeometr
     }
 }
 
-
 float4 PS_PreRender_Sky(MeshGeometryOutput input) : SV_Target
 {
     return PS_Sky(ConvetMeshOutput(input));
@@ -181,7 +182,61 @@ float4 PS_PreRender_Sky(MeshGeometryOutput input) : SV_Target
 
 float4 PS_PreRender(MeshGeometryOutput input) : SV_Target
 {
-    return PS_AllLight(ConvetMeshOutput(input)); 
+    return PS_AllLight(ConvetMeshOutput(input));
+}
+
+
+TextureCube DynamicCubeMap;
+float RefractionAmount = 0.2f;
+float RefractionAlpha = 0.75f;
+
+float CubeMapAmount = 1.0f;
+float CubeMapBias = 1.0f;
+float CubeMapScale = 1.0f;
+
+float4 PS_CubeMap(MeshOutput input) : SV_Target
+{
+    float4 color = 0;
+    
+    float3 view = normalize(input.wPosition - ViewPosition());
+    float3 normal = normalize(input.Normal);
+    float3 reflection = reflect(view, normal);
+    
+    float3 refraction = refract(view, normal, RefractionAmount);
+    
+    float4 diffuse = 0;
+    
+    if (CubeRenderType == 0)
+    {
+        color = DynamicCubeMap.Sample(LinearSampler, input.oPosition);
+    }
+    else if (CubeRenderType == 1)
+    {
+        color = DynamicCubeMap.Sample(LinearSampler, reflection);
+    }
+    else if (CubeRenderType == 2)
+    {
+        color = DynamicCubeMap.Sample(LinearSampler, -refraction);
+        color.a = RefractionAlpha;
+    }
+    else if (CubeRenderType == 3)
+    {
+        diffuse = PS_AllLight(input);
+        color = DynamicCubeMap.Sample(LinearSampler, reflection);
+        
+        color.rgb *= (0.15f + diffuse * 0.95f);
+    }
+    else if (CubeRenderType == 4)
+    {
+        diffuse = PS_AllLight(input);
+        color = DynamicCubeMap.Sample(LinearSampler, reflection);
+        
+        float4 fresnel = CubeMapBias + (1.0f - CubeMapScale) * pow(abs(1.0f - dot(view, normal)), CubeMapAmount);
+        color = CubeMapAmount * diffuse + lerp(diffuse, color, fresnel);
+        color.a = 1.0f;
+    }
+    
+    return color;
 }
 
 technique11 T0
@@ -203,4 +258,9 @@ technique11 T0
     P_VGP(P7, VS_Mesh, GS_PreRender, PS_PreRender)
     P_VGP(P8, VS_Model, GS_PreRender, PS_PreRender)
     P_VGP(P9, VS_Animation, GS_PreRender, PS_PreRender)
+
+    //Dynamic CubeMap Render
+    P_BS_VP(P10, AlphaBlend, VS_Mesh, PS_CubeMap)
+    P_BS_VP(P11, AlphaBlend, VS_Model, PS_CubeMap)
+    P_BS_VP(P12, AlphaBlend, VS_Animation, PS_CubeMap)
 }

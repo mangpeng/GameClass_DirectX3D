@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "BloomDemo.h"
+#include "DynamicCubeMapDemo.h"
 
 void Main::Initialize()
 {
-	Push(new BloomDemo());
+	Push(new DynamicCubeMapDemo());
 } 
 
 void Main::Ready()
