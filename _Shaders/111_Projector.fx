@@ -9,7 +9,7 @@ MeshOutput VS_Mesh_Projector(VertexMesh input)
     
     return output;
 }
-
+ 
 MeshOutput VS_Model_Projector(VertexModel input)
 {
     MeshOutput output = VS_Model(input);
