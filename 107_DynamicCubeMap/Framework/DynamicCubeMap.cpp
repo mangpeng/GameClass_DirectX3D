@@ -125,7 +125,6 @@ void DynamicCubeMap::PreRender(Vector3& position, Vector3& scale, float zNear, f
 	buffer->Render();
 	sBuffer->SetConstantBuffer(buffer->Buffer());
 
-
 	D3D::Get()->SetRenderTarget(rtv, dsv);
 	D3D::Get()->Clear(Color(0, 0, 0, 1), rtv, dsv);
 

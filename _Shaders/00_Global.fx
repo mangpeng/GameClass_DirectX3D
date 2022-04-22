@@ -95,6 +95,37 @@ struct MeshOutput
     float2 Uv : Uv;
     float4 Color : Color;
 };
+
+struct MeshGeometryOutput
+{
+    float4 Position : SV_Position0; // 래스터라이징이 완료된 포지션
+    float3 oPosition : Position1; // 오리지널 포지션
+    float3 wPosition : Position2; // 월드 포지션
+    
+    float3 Normal : Normal;
+    float3 Tangent : Tangent;
+    float2 Uv : Uv;
+    float4 Color : Color;
+    
+    uint TargetIndex : SV_RenderTargetArrayIndex;
+};
+
+
+MeshOutput ConvetMeshOutput(MeshGeometryOutput input)
+{
+    MeshOutput output;
+    
+    output.Position = input.Position;
+    output.oPosition = input.oPosition;
+    output.wPosition = input.wPosition;
+    output.Normal = input.Normal;
+    output.Tangent = input.Tangent;
+    output.Uv = input.Uv;
+    output.Color = input.Color;
+    
+    return output;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 SamplerState LinearSampler

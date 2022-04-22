@@ -1,3 +1,9 @@
+float4 PS_Sky(MeshOutput input) : SV_Target
+{
+    return SkyCubeMap.Sample(LinearSampler, input.oPosition);
+}
+///////////////////////////////////////////////////////////////////////////////
+
 struct VertexMesh
 {
     float4 Position : Position;
