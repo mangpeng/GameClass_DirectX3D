@@ -34,8 +34,6 @@ private:
 
 
 private:
-	bool bOrigin = false;
-
 	float threshold = 0.05f;
 
 	UINT blurCount = 15;
