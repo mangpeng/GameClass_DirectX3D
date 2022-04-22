@@ -90,6 +90,9 @@ struct MeshOutput
     float3 oPosition : Position1; // 오리지널 포지션
     float3 wPosition : Position2; // 월드 포지션
     
+    float4 wvpPosition : Position3; //WVP
+    float4 wvpPosition_Sub : Position4; //WVP
+    
     float3 Normal : Normal;
     float3 Tangent : Tangent;
     float2 Uv : Uv;
