@@ -12,8 +12,10 @@ void ShadowDemo::Initialize()
 	shadow = new Shadow(shader, Vector3(0, 0, 0), 65);
 
 	render2D = new Render2D();
-	render2D->GetTransform()->Position(D3D::Width() * 0.5f, D3D::Height() * 0.5f, 0);
-	render2D->GetTransform()->Scale(D3D::Width(), D3D::Height(), 1);
+	//render2D->GetTransform()->Position(D3D::Width() * 0.5f, D3D::Height() * 0.5f, 0);
+	//render2D->GetTransform()->Scale(D3D::Width(), D3D::Height(), 1);
+	render2D->GetTransform()->Position(150, D3D::Height() - 150, 0);
+	render2D->GetTransform()->Scale(300, 300, 1);
 	render2D->SRV(shadow->SRV());
 
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
@@ -80,27 +82,27 @@ void ShadowDemo::PreRender()
 
 void ShadowDemo::Render()
 {
-	//sky->Pass(0);
-	//sky->Render();
+	sky->Pass(0);
+	sky->Render();
 
-	//Pass(0, 1, 2);
+	Pass(3, 4, 5);
 
-	//wall->Render();
-	//sphere->Render();
+	wall->Render();
+	sphere->Render();
 
-	//brick->Render();
-	//cylinder->Render();
+	brick->Render();
+	cylinder->Render();
 
-	//stone->Render();
-	//cube->Render();
+	stone->Render();
+	cube->Render();
 
-	//floor->Render();
-	//grid->Render();
+	floor->Render();
+	grid->Render();
 
-	//airplane->Render();
+	airplane->Render();
 
-	//kachujin->Render();
-	//weapon->Render();
+	kachujin->Render();
+	weapon->Render();
 }
 
 void ShadowDemo::PostRender()

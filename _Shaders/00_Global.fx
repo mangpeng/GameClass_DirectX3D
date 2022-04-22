@@ -92,6 +92,7 @@ struct MeshOutput
     
     float4 wvpPosition : Position3; //WVP
     float4 wvpPosition_Sub : Position4; //WVP
+    float4 sPosition : Position5; // Light - WVP
     
     float3 Normal : Normal;
     float3 Tangent : Tangent;
