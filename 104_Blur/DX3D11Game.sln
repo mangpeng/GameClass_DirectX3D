@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{57
 		..\_Shaders\100_ColorTone.fx = ..\_Shaders\100_ColorTone.fx
 		..\_Shaders\103_Mrt.fx = ..\_Shaders\103_Mrt.fx
 		..\_Shaders\104_Blur.fx = ..\_Shaders\104_Blur.fx
+		..\_Shaders\104_GaussianBlur.fx = ..\_Shaders\104_GaussianBlur.fx
 		..\_Shaders\75_Lighting.fx = ..\_Shaders\75_Lighting.fx
 		..\_Shaders\78_PointLighting.fx = ..\_Shaders\78_PointLighting.fx
 		..\_Shaders\80_SpotLighting.fx = ..\_Shaders\80_SpotLighting.fx

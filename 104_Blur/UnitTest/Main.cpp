@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "BlurDemo.h"
+#include "GaussianBlurDemo2.h"
 
 void Main::Initialize()
 {
-	Push(new BlurDemo());
+	Push(new GaussianBlurDemo2());
 } 
 
 void Main::Ready()
