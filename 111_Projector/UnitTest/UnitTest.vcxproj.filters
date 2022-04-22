@@ -141,6 +141,9 @@
     <ClInclude Include="DynamicCubeMapDemo.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="ProjectorDemo.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -281,6 +284,9 @@
       <Filter>PostEffects</Filter>
     </ClCompile>
     <ClCompile Include="DynamicCubeMapDemo.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectorDemo.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>

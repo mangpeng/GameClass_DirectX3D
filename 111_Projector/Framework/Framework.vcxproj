@@ -26,6 +26,7 @@
     <ClCompile Include="DynamicCubeMap.cpp" />
     <ClCompile Include="Envrioment\CubeSky.cpp" />
     <ClCompile Include="Envrioment\Terrain.cpp" />
+    <ClCompile Include="Fixity.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -46,6 +47,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PerFrame.cpp" />
     <ClCompile Include="PostEffect.cpp" />
+    <ClCompile Include="Projector.cpp" />
     <ClCompile Include="Rain.cpp" />
     <ClCompile Include="Render2D.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -82,6 +84,7 @@
     <ClInclude Include="DynamicCubeMap.h" />
     <ClInclude Include="Envrioment\CubeSky.h" />
     <ClInclude Include="Envrioment\Terrain.h" />
+    <ClInclude Include="Fixity.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Lighting.h" />
     <ClInclude Include="Material.h" />
@@ -101,6 +104,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PerFrame.h" />
     <ClInclude Include="PostEffect.h" />
+    <ClInclude Include="Projector.h" />
     <ClInclude Include="Rain.h" />
     <ClInclude Include="Render2D.h" />
     <ClInclude Include="Renderer.h" />

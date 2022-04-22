@@ -180,6 +180,12 @@
       <Filter>Objedts</Filter>
     </ClCompile>
     <ClCompile Include="DynamicCubeMap.cpp" />
+    <ClCompile Include="Fixity.cpp">
+      <Filter>Viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Projector.cpp">
+      <Filter>Objedts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -341,5 +347,11 @@
       <Filter>Objedts</Filter>
     </ClInclude>
     <ClInclude Include="DynamicCubeMap.h" />
+    <ClInclude Include="Fixity.h">
+      <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Projector.h">
+      <Filter>Objedts</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

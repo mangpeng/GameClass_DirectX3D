@@ -25,7 +25,7 @@ struct VertexInput
 struct VertexOutput
 {
     float4 Position : SV_Position;
-    float2 Uv : Uv;
+    float2 Uv : Uv; 
     float Alpha : Alpha;
 };
 

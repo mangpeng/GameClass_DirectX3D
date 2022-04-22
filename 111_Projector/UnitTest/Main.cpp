@@ -2,11 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "DynamicCubeMapDemo.h"
+#include "ProjectorDemo.h"
 
 void Main::Initialize()
 {
-	Push(new DynamicCubeMapDemo());
+	Push(new ProjectorDemo());
 } 
 
 void Main::Ready()
