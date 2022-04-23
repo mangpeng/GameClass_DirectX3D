@@ -23,11 +23,44 @@ float4 PS(MeshOutput input) : SV_Target
     }
     
     float depth = 0;
-    float z = position.z;
+    float z = position.z - ShadowBias;
     float factor = 0;
     
-    depth = ShadowMap.Sample(LinearSampler, position.xy).r;
-    factor = (float) (depth >= z);
+    if(ShadowQuality == 0)
+    {
+        depth = ShadowMap.Sample(LinearSampler, position.xy).r;
+        factor = (float) (depth >= z);
+    }
+    else if(ShadowQuality == 1)//pcf
+    {
+        depth = position.z;
+        factor = ShadowMap.SampleCmpLevelZero(ShadowSampler, position.xy, depth).r;
+    }
+    else if (ShadowQuality == 2) //PCF + Blur
+    {
+        depth = position.z;
+        
+        float2 size = 1.0f / ShadowMapSize;
+        float2 offsets[] =
+        {
+            float2(-size.x, -size.y), float2(0.0f, -size.y), float2(+size.x, -size.y),
+            float2(-size.x, 0.0f), float2(0.0f, 0.0f), float2(+size.x, 0.0f),
+            float2(-size.x, +size.y), float2(0.0f, +size.y), float2(+size.x, +size.y),
+        };
+        
+        
+        float2 uv = 0;
+        float sum = 0;
+        
+        [unroll(9)]
+        for (int i = 0; i < 9; i++)
+        {
+            uv = position.xy + offsets[i];
+            sum += ShadowMap.SampleCmpLevelZero(ShadowSampler, uv, depth).r;
+        }
+        
+        factor = sum / 9.0f;
+    }
     
     factor = saturate(factor + depth);
     

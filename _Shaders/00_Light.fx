@@ -18,6 +18,7 @@ Texture2D SpecularMap;
 Texture2D NormalMap;
 TextureCube SkyCubeMap;
 Texture2D ShadowMap;
+SamplerComparisonState ShadowSampler;
 
 struct MaterialDesc
 {

@@ -2,7 +2,14 @@
 오늘의 요약
 =========================================================================
 정리
-
+Tessellation(LOD, Frustum Culling, Terrain LOD)
+Shadow(VSM, CSM)
+Water(Reflection,Refraction, Clipping)
+Atmosphereic Scattering(Mie, Rayleigh)
+Deffered Rendering
+PBR(Phsycially Based Rendering)
+Ambient Occlusion(ex : SSAO)
+Anti Aliasing(ex : MSAA)
 
 =========================================================================
 오늘의 과제
