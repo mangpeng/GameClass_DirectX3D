@@ -9,7 +9,8 @@ void ShadowDemo::Initialize()
 
 	shader = new Shader(L"113_Shadow.fx");
 	
-	shadow = new Shadow(shader, Vector3(0, 0, 0), 65);
+	UINT size = 1024;// *16;
+	shadow = new Shadow(shader, Vector3(0, 0, 0), 65, size, size);
 
 	render2D = new Render2D();
 	//render2D->GetTransform()->Position(D3D::Width() * 0.5f, D3D::Height() * 0.5f, 0);
